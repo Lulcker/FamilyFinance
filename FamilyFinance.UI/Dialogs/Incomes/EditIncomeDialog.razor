@@ -1,0 +1,57 @@
+﻿<MudDialog @bind-Visible="isOpened" Options="Options">
+    <TitleContent>
+        <MudStack Row AlignItems="AlignItems.Center">
+            <MudIcon Icon="@Icons.Material.Filled.Edit" />
+            <MudText Typo="Typo.h6">Изменение дохода</MudText>
+        </MudStack>
+    </TitleContent>
+    <DialogContent>
+        <MudNumericField Label="Сумма дохода" Required
+                         @bind-Value="newIncomeAmount"
+                         Variant="Variant.Outlined"
+                         Class="mb-3" Min="0" Immediate
+                         OnKeyDown="HandleKeyDown" />
+        
+        <MudSelect T="IncomeType"
+                   Label="Тип дохода" Required
+                   @bind-Value="newIncomeType"
+                   Variant="Variant.Outlined"
+                   Class="mb-3" Dense Immediate
+                   OnKeyDown="HandleKeyDown">
+            <MudSelectItem Value="IncomeType.Salary">Зарплата</MudSelectItem>
+            <MudSelectItem Value="IncomeType.Additional">Дополнительный доход</MudSelectItem>
+        </MudSelect>
+        
+        <MudDatePicker Label="Дата дохода" Required
+                       @bind-Date="newIncomeDateTime"
+                       Variant="Variant.Outlined"
+                       Class="mb-3" MaxDate="DateTime.Now" />
+        
+        <MudTextField Label="Комментарий"
+                      @bind-Value="newIncomeComment"
+                      Variant="Variant.Outlined"
+                      Class="mb-4" Immediate
+                      OnKeyDown="HandleKeyDown" />
+        
+        @if (isLoading)
+        {
+            <MudProgressLinear Color="Color.Primary" Indeterminate="isLoading"
+                               Class="mt-2"/>
+        }
+    </DialogContent>
+    <DialogActions>
+        <MudStack Row AlignItems="AlignItems.Center" Class="mr-4 mb-2">
+            <MudButton OnClick="@(() => Close())"
+                       Variant="Variant.Outlined"
+                       Color="Color.Primary">
+                Отмена
+            </MudButton>
+            <MudButton OnClick="SaveAsync"
+                       Variant="Variant.Filled"
+                       Color="Color.Primary"
+                       Disabled="IsSaveButtonDisabled">
+                Сохранить
+            </MudButton>
+        </MudStack>
+    </DialogActions>
+</MudDialog>

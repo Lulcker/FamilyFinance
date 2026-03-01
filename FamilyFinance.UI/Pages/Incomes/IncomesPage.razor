@@ -1,0 +1,130 @@
+﻿@page "/incomes"
+
+<PageTitle>FamilyFinance | Доходы</PageTitle>
+
+<MudButtonGroup FullWidth OverrideStyles="false" Class="mb-3">
+    <MudButton OnClick="GoToReport" Color="Color.Primary" Variant="Variant.Outlined">
+        Отчёт
+    </MudButton>
+    <MudButton OnClick="GoToExpenses" Color="Color.Primary" Variant="Variant.Outlined">
+        Расходы
+    </MudButton>
+    <MudButton Color="Color.Primary" Variant="Variant.Filled">
+        Доходы
+    </MudButton>
+</MudButtonGroup>
+
+@if (!isAddedMode)
+{
+    <MudButton OnClick="SetAddedMode"
+               StartIcon="@Icons.Material.Filled.Add"
+               Color="Color.Primary" Class="mb-3"
+               Variant="Variant.Outlined">
+        Добавить
+    </MudButton>
+}
+else
+{
+    <MudPaper Class="pa-4 mb-3">
+        <MudNumericField Label="Сумма дохода" Required
+                         @bind-Value="newIncomeAmount"
+                         Variant="Variant.Outlined"
+                         Class="mb-3" Min="0" Immediate
+                         OnKeyDown="HandleKeyDown" />
+        
+        <MudSelect T="IncomeType"
+                   Label="Тип дохода" Required
+                   @bind-Value="newIncomeType"
+                   Variant="Variant.Outlined"
+                   Class="mb-3" Dense Immediate
+                   OnKeyDown="HandleKeyDown">
+            <MudSelectItem Value="IncomeType.Salary">Зарплата</MudSelectItem>
+            <MudSelectItem Value="IncomeType.Additional">Дополнительный доход</MudSelectItem>
+        </MudSelect>
+        
+        <MudDatePicker Label="Дата дохода" Required
+                       @bind-Date="newIncomeDateTime"
+                       Variant="Variant.Outlined"
+                       Class="mb-3" MaxDate="DateTime.Now" />
+        
+        <MudTextField Label="Комментарий"
+                         @bind-Value="newIncomeComment"
+                         Variant="Variant.Outlined"
+                         Class="mb-4" Immediate
+                         OnKeyDown="HandleKeyDown" />
+
+        <MudStack Row AlignItems="AlignItems.Center">
+            <MudButton OnClick="UnsetAndClearAddedMode"
+                       Color="Color.Primary" Variant="Variant.Outlined">
+                Отменить
+            </MudButton>
+
+            <MudSpacer/>
+
+            <MudButton OnClick="SaveAsync"
+                       Disabled="IsSaveButtonDisabled"
+                       Color="Color.Primary" Variant="Variant.Filled">
+                Сохранить
+            </MudButton>
+        </MudStack>
+
+        @if (isLoading)
+        {
+            <MudProgressLinear Color="Color.Primary" Indeterminate="isLoading"
+                               Class="mt-2"/>
+        }
+    </MudPaper>
+}
+
+@if (incomes.Count == 0 && !isDataLoading)
+{
+    <MudText Typo="Typo.h5" Class="mt-2 mb-3">
+        Нет доходов
+    </MudText>
+}
+else
+{
+    <MudDataGrid Items="incomes" RowStyleFunc="RowStyleFunc" SortMode="SortMode.None" Class="my-grid mt-2">
+        <Columns>
+            <PropertyColumn Property="@(x => x.Date)" Title="Дата" />
+            <TemplateColumn Title="Сумма">
+                <CellTemplate>
+                    <MudText Typo="Typo.body2" Style="white-space: nowrap">
+                        @context.Item.Amount.FormatRubles()
+                    </MudText>
+                </CellTemplate>
+            </TemplateColumn>
+            <TemplateColumn Title="Тип">
+                <CellTemplate>
+                    @{
+                        var type = context.Item.Type;
+                    }
+                    <MudChip Variant="Variant.Filled" Color="@(type is IncomeType.Salary ? Color.Info : Color.Success)">
+                        @(type is IncomeType.Salary ? "Зарплата" : "Дополнительный доход")
+                    </MudChip>
+                </CellTemplate>
+            </TemplateColumn>
+            <PropertyColumn Property="@(x => x.Comment)" Title="Комментарий" />
+            <TemplateColumn>
+                <CellTemplate>
+                    @{
+                        var income = context.Item!;
+                    }
+                    @if (income.UserId == userSession.UserId)
+                    {
+                        <MudStack Row AlignItems="AlignItems.Center" Wrap="Wrap.Wrap" Spacing="1">
+                            <MudIconButton Icon="@Icons.Material.Filled.Edit"
+                                           OnClick="@(() => OpenEditDialog(income))"
+                                           Size="Size.Small" />
+                            <MudIconButton Icon="@Icons.Material.Filled.Delete"
+                                           OnClick="@(() => DeleteIncomeAsync(income.Id))"
+                                           Color="Color.Error" Size="Size.Small" />
+                        </MudStack>
+                    }
+                </CellTemplate>
+            </TemplateColumn>
+        </Columns>
+    </MudDataGrid>
+}
+
+<EditIncomeDialog @ref="editIncomeDialog" AfterSave="LoadDataAsync" />

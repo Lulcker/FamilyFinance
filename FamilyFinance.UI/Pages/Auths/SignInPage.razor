@@ -1,0 +1,35 @@
+﻿@page "/sign-in"
+
+<PageTitle>Вход в FamilyFinance</PageTitle>
+
+<div class="main-center justify-content-center vh-70">
+    <div class="main-container pl-4 pr-4">
+        <MudText Typo="Typo.h4" Align="Align.Center" Class="mb-5">
+            Вход в аккаунт
+        </MudText>
+
+        <MudPaper Elevation="3" Class="pa-4">
+            <MudStack Justify="Justify.Center" Spacing="2">
+                <MudTextField @bind-Value="email" Immediate Label="Почта"
+                              Variant="Variant.Outlined" Class="mb-3"
+                              InputType="InputType.Email" />
+
+                <MudTextField @bind-Value="password" Immediate Label="Пароль"
+                              Variant="Variant.Outlined" Class="mb-3"
+                              InputType="InputType.Password" />
+
+                <MudButton OnClick="LoginAsync"
+                           Disabled="IsLoginButtonDisabled"
+                           Variant="Variant.Filled"
+                           Color="Color.Primary">
+                    Войти
+                </MudButton>
+            </MudStack>
+        </MudPaper>
+    </div>
+</div>
+
+<MudThemeProvider Theme="Consts.MudTheme" />
+<MudPopoverProvider />
+<MudDialogProvider CloseButton="true" />
+<MudSnackbarProvider />

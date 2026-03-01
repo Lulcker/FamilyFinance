@@ -1,0 +1,107 @@
+﻿<MudDialog @bind-Visible="isOpened" Options="Options">
+    <TitleContent>
+        <MudStack Row AlignItems="AlignItems.Center">
+            <MudIcon Icon="@Icons.Material.Filled.Edit" />
+            <MudText Typo="Typo.h6">Добавление расходов</MudText>
+        </MudStack>
+    </TitleContent>
+    <DialogContent>
+        @if (isLoading)
+        {
+            <MudProgressLinear Color="Color.Primary" Indeterminate="isLoading"
+                               Class="mt-2"/>
+        }
+        
+        <MudStack Spacing="2">
+            <MudButton OnClick="BeginAddDate"
+                       Variant="Variant.Filled"
+                       Color="Color.Primary">
+                Добавить новую дату
+            </MudButton>
+            
+            @if (creatingDate)
+            {
+                <MudPaper Class="pa-3 mb-3">
+                    <MudDatePicker Label="Выберите дату"
+                                   @bind-Date="creatingDateDateTime"
+                                   IsDateDisabledFunc="IsDateDisabledFunc"
+                                   MaxDate="@(DateTime.UtcNow.ToLocalTime())"
+                                   Variant="Variant.Outlined" />
+                    
+                    <MudStack Row AlignItems="AlignItems.Center" Class="mt-2">
+                        <MudButton OnClick="CancelAddDate"
+                                   Color="Color.Primary"
+                                   Variant="Variant.Outlined">
+                            Отмена
+                        </MudButton>
+                        <MudButton OnClick="ConfirmAddDate"
+                                   Color="Color.Primary"
+                                   Variant="Variant.Filled"
+                                   Disabled="@(!creatingDateDateTime.HasValue)">
+                            Добавить дату
+                        </MudButton>
+                    </MudStack>
+                </MudPaper>
+            }
+
+            @foreach (var group in dateGroups)
+            {
+                <MudExpansionPanels>
+                    <MudExpansionPanel Text=@group.Date.ToString("dd MMMM") Expanded>
+                        <MudStack Spacing="1">
+                            <MudButton OnClick="@(() => AddDraft(group))"
+                                       Size="Size.Small" StartIcon="@Icons.Material.Filled.Add"
+                                       Variant="Variant.Outlined">
+                                Добавить расход
+                            </MudButton>
+
+                            @foreach (var draft in group.Drafts)
+                            {
+                                <AddExpenseRow @key="draft" Date="@group.Date"
+                                               Categories="@categories"
+                                               OnSave="@(newExpense => SaveExpense(newExpense, group, draft))"
+                                               OnRemove="@(()=> RemoveDraft(group, draft))" />
+                            }
+                            
+                            <MudDivider Class="my-2" />
+                            <MudList T="AddExpenseRequestModel" Dense>
+                                @foreach (var newExpense in newExpenses.Where(x => x.Date == group.Date))
+                                {
+                                    <MudListItem>
+                                        <MudStack Row AlignItems="AlignItems.Center" Justify="Justify.SpaceBetween" Style="width: 100%">
+                                            <div>
+                                                <MudText>
+                                                    <b>@newExpense.Amount.FormatRubles()</b> — @GetCategoryName(newExpense.CategoryId)
+                                                </MudText>
+                                                <MudText Typo="Typo.caption">
+                                                    @(newExpense.IsPersonal ? "Личный" : "Общий") @(string.IsNullOrWhiteSpace(newExpense.Comment) ? "" : $"• {newExpense.Comment}")
+                                                </MudText>
+                                            </div>
+                                            
+                                            <MudIconButton Icon="@Icons.Material.Filled.Delete" Color="Color.Error" OnClick="@(() => RemoveExpense(newExpense))" />
+                                        </MudStack>
+                                    </MudListItem>
+                                }
+                            </MudList>
+                        </MudStack>
+                    </MudExpansionPanel>
+                </MudExpansionPanels>
+            }
+        </MudStack>
+    </DialogContent>
+    <DialogActions>
+        <MudStack Row AlignItems="AlignItems.Center" Class="mr-4 mb-2">
+            <MudButton OnClick="@(() => Close())"
+                       Variant="Variant.Outlined"
+                       Color="Color.Primary">
+                Отмена
+            </MudButton>
+            <MudButton OnClick="SaveAsync"
+                       Variant="Variant.Filled"
+                       Color="Color.Primary"
+                       Disabled="IsSaveButtonDisabled">
+                Сохранить
+            </MudButton>
+        </MudStack>
+    </DialogActions>
+</MudDialog>

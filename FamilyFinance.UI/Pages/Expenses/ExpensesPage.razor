@@ -1,0 +1,72 @@
+﻿@page "/expenses"
+
+<PageTitle>FamilyFinance | @(isGeneralExpenses ? "Общие" : "Личные") расходы</PageTitle>
+
+<MudButtonGroup FullWidth OverrideStyles="false" Class="mb-3">
+    <MudButton OnClick="GoToReport" Color="Color.Primary" Variant="Variant.Outlined">
+        Отчёт
+    </MudButton>
+    <MudButton Color="Color.Primary" Variant="Variant.Filled">
+        Расходы
+    </MudButton>
+    <MudButton OnClick="GoToIncomes" Color="Color.Primary" Variant="Variant.Outlined">
+        Доходы
+    </MudButton>
+</MudButtonGroup>
+
+<MudButton OnClick="OpenAddExpensesDialog"
+           StartIcon="@Icons.Material.Filled.Add"
+           Color="Color.Primary" Class="mb-3"
+           Variant="Variant.Outlined">
+    Добавить
+</MudButton>
+
+<MudRadioGroup T="bool" Value="isGeneralExpenses"
+               ValueChanged="IsGeneralExpensesChange">
+    <MudRadio Value="true">Общие</MudRadio>
+    <MudRadio Value="false">Личные</MudRadio>
+</MudRadioGroup>
+
+@if (expenses.Count == 0 && !isLoading)
+{
+    <MudText Typo="Typo.h5" Class="mt-2 mb-3">
+        Нет расходов
+    </MudText>
+}
+else
+{
+    <MudDataGrid Items="expenses" RowStyleFunc="RowStyleFunc" SortMode="SortMode.None" Class="my-grid mt-2">
+        <Columns>
+            <PropertyColumn Property="@(x => x.Date)" Title="Дата" />
+            <TemplateColumn Title="Сумма">
+                <CellTemplate>
+                    <MudText Typo="Typo.body2" Style="white-space: nowrap">
+                        @context.Item.Amount.FormatRubles()
+                    </MudText>
+                </CellTemplate>
+            </TemplateColumn>
+            <PropertyColumn Property="@(x => x.CategoryName)" Title="Категория" />
+            <PropertyColumn Property="@(x => x.Comment)" Title="Комментарий" />
+            <TemplateColumn>
+                <CellTemplate>
+                    @{
+                        var expense = context.Item!;
+                    }
+                    @if (expense.UserId == userSession.UserId)
+                    {
+                        <MudStack Row AlignItems="AlignItems.Center" Wrap="Wrap.Wrap" Spacing="1">
+                            <MudIconButton Icon="@Icons.Material.Filled.Edit"
+                                       
+                                           Size="Size.Small" />
+                            <MudIconButton Icon="@Icons.Material.Filled.Delete"
+                                           OnClick="@(() => DeleteExpenseAsync(expense.Id))"
+                                           Color="Color.Error" Size="Size.Small" />
+                        </MudStack>
+                    }
+                </CellTemplate>
+            </TemplateColumn>
+        </Columns>
+    </MudDataGrid>
+}
+
+<AddExpensesDialog @ref="addExpensesDialog" AfterSave="LoadDataAsync" />

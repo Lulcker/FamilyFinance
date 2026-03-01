@@ -1,0 +1,16 @@
+﻿@page "/"
+@page "/report"
+
+<PageTitle>FamilyFinance | Отчёт</PageTitle>
+
+<MudButtonGroup FullWidth OverrideStyles="false" Class="mb-3">
+    <MudButton Color="Color.Primary" Variant="Variant.Filled">
+        Отчёт
+    </MudButton>
+    <MudButton OnClick="GoToExpenses" Color="Color.Primary" Variant="Variant.Outlined">
+        Расходы
+    </MudButton>
+    <MudButton OnClick="GoToIncomes" Color="Color.Primary" Variant="Variant.Outlined">
+        Доходы
+    </MudButton>
+</MudButtonGroup>

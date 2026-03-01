@@ -1,0 +1,76 @@
+﻿name: CI/CD Pipeline
+
+on:
+  push:
+    branches: [ main ]
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      - name: Login to Docker Hub
+        uses: docker/login-action@v2
+        with:
+          username: ${{ secrets.DOCKER_USERNAME }}
+          password: ${{ secrets.DOCKER_TOKEN }}
+
+      - name: Build and push backend
+        run: |
+          IMAGE=${{ secrets.DOCKER_USERNAME }}/family-finance-api
+          GIT_SHA=${{ github.sha }}
+          docker build -t $IMAGE:latest -t $IMAGE:$GIT_SHA -f FamilyFinance/Dockerfile .
+          docker push $IMAGE:latest
+          docker push $IMAGE:$GIT_SHA
+
+      - name: Build and push frontend
+        run: |
+          IMAGE=${{ secrets.DOCKER_USERNAME }}/family-finance-ui
+          GIT_SHA=${{ github.sha }}
+          docker build -t $IMAGE:latest -t $IMAGE:$GIT_SHA -f FamilyFinance.UI/Dockerfile --build-arg API_BASE_URL=${{ secrets.API_BASE_URL }} .
+          docker push $IMAGE:latest
+          docker push $IMAGE:$GIT_SHA
+
+      - name: Copy docker-compose.yml to server
+        uses: appleboy/scp-action@v1.0.0
+        with:
+          host: ${{ secrets.SSH_HOST }}
+          username: ${{ secrets.SSH_USERNAME }}
+          password: ${{ secrets.SSH_PASSWORD }}
+          source: "docker-compose.yml"
+          target: "family-finance/"
+
+      - name: Deploy to server
+        uses: appleboy/ssh-action@v1.0.0
+        with:
+          host: ${{ secrets.SSH_HOST }}
+          username: ${{ secrets.SSH_USERNAME }}
+          password: ${{ secrets.SSH_PASSWORD }}
+          script: |
+            cd family-finance/
+
+            cat > .env <<EOL
+            DOCKER_USERNAME=${{ secrets.DOCKER_USERNAME }}
+            DB_CONNECTION_STRING=${{ secrets.DB_CONNECTION_STRING }}
+            WEB_BASE_URL=${{ secrets.WEB_BASE_URL }}
+            AUTH_KEY=${{ secrets.AUTH_KEY }}
+            AUTH_ISSUER=${{ secrets.AUTH_ISSUER }}
+            AUTH_AUDIENCE=${{ secrets.AUTH_AUDIENCE }}
+            HASH_PEPPER=${{ secrets.HASH_PEPPER }}
+            AES_KEY=${{ secrets.AES_KEY }}
+            AES_IV=${{ secrets.AES_IV }}
+            DEFAULT_USER_0_NAME=${{ secrets.DEFAULT_USER_0_NAME }}
+            DEFAULT_USER_0_EMAIL=${{ secrets.DEFAULT_USER_0_EMAIL }}
+            DEFAULT_USER_0_PASSWORD=${{ secrets.DEFAULT_USER_0_PASSWORD }}
+            DEFAULT_USER_0_TRANSACTION_COLOR=${{ secrets.DEFAULT_USER_0_TRANSACTION_COLOR }}
+            DEFAULT_USER_1_NAME=${{ secrets.DEFAULT_USER_1_NAME }}
+            DEFAULT_USER_1_EMAIL=${{ secrets.DEFAULT_USER_1_EMAIL }}
+            DEFAULT_USER_1_PASSWORD=${{ secrets.DEFAULT_USER_1_PASSWORD }}
+            DEFAULT_USER_1_TRANSACTION_COLOR=${{ secrets.DEFAULT_USER_1_TRANSACTION_COLOR }}
+            EOL
+            
+            docker compose pull
+            docker compose up -d --remove-orphans
+            docker image prune -a -f

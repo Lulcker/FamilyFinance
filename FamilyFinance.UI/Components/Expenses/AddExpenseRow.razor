@@ -1,0 +1,39 @@
+﻿<MudPaper Class="pa-3 mb-2" Elevation="0">
+    <MudNumericField Label="Сумма расхода"
+                     @bind-Value="amount" Required
+                     Variant="Variant.Outlined"
+                     Min="0" Immediate />
+    <MudSelect T="Guid?"
+               Label="Категория" Required
+               @bind-Value="categoryId"
+               Variant="Variant.Outlined"
+               Dense Immediate
+               Class="mt-2">
+        @foreach (var c in Categories)
+        {
+            <MudSelectItem T="Guid?" Value="@c.Id">@c.Name</MudSelectItem>
+        }
+    </MudSelect>
+
+    <MudSwitch @bind-Value="isPersonal"
+               Color="Color.Primary"
+               Class="mt-2">
+        Личный
+    </MudSwitch>
+
+    <MudTextField Label="Комментарий"
+                  @bind-Value="comment"
+                  Variant="Variant.Outlined"
+                  Immediate
+                  Class="mt-2"/>
+
+    <MudStack Row AlignItems="AlignItems.Center" Justify="Justify.SpaceBetween" Class="mt-2">
+        <MudButton OnClick="Save"
+                   Variant="Variant.Filled"
+                   Color="Color.Primary"
+                   Disabled="@(!CanSave)">
+            Сохранить
+        </MudButton>
+        <MudIconButton Icon="@Icons.Material.Filled.Delete" Color="Color.Error" OnClick="@(()=>OnRemove.InvokeAsync(null))" />
+    </MudStack>
+</MudPaper>

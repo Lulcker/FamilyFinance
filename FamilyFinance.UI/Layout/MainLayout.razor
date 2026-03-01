@@ -1,0 +1,39 @@
+﻿@inherits LayoutComponentBase
+
+<div class="page">
+    <main>
+        <article class="content pr-4 pl-4">
+            <div class="main-center">
+                <div class="main-header">
+                    <MudStack Row AlignItems="AlignItems.Center" Spacing="2" Class="mb-3">
+                        <MudBreadcrumbs Items="breadcrumbHelper.Breadcrumbs"/>
+                        <MudSpacer/>
+                        <MudHidden Breakpoint="Breakpoint.Xs">
+                            <MudText>
+                                @userSession.Name
+                            </MudText>
+                        </MudHidden>
+                        <MudMenu Icon="@Icons.Material.Filled.MoreVert" Dense
+                                 Color="Color.Primary" Class="mr-2">
+                            @if (!currentPage.StartsWith("categories"))
+                            {
+                                <MudMenuItem Label="Категории" OnClick="OpenCategories"
+                                             Icon="@Icons.Material.Filled.Category" IconColor="Color.Info"/>
+                            }
+                            <MudMenuItem Label="Выйти" OnClick="LogOutAsync"
+                                         Icon="@Icons.Material.Filled.Logout" IconColor="Color.Error"/>
+                        </MudMenu>
+                    </MudStack>
+                </div>
+                <div class="main-container">
+                    @Body
+                </div>
+            </div>
+        </article>
+    </main>
+</div>
+
+<MudThemeProvider Theme="Consts.MudTheme" />
+<MudPopoverProvider />
+<MudDialogProvider CloseButton="true" BackdropClick="false" />
+<MudSnackbarProvider />
