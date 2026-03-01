@@ -14,13 +14,13 @@ services:
       Aes__Key: ${AES_KEY}
       Aes__IV: ${AES_IV}
       DefaultUsers__0__Name: ${DEFAULT_USER_0_NAME}
-      DefaultUsers__0__Email: $DEFAULT_USER_0_EMAIL}
+      DefaultUsers__0__Email: "{$DEFAULT_USER_0_EMAIL}"
       DefaultUsers__0__Password: ${DEFAULT_USER_0_PASSWORD}
-      DefaultUsers__0__HexTransactionColor: ${DEFAULT_USER_0_TRANSACTION_COLOR}
+      DefaultUsers__0__HexTransactionColor: "${DEFAULT_USER_0_TRANSACTION_COLOR}"
       DefaultUsers__1__Name: ${DEFAULT_USER_1_NAME}
-      DefaultUsers__1__Email: ${DEFAULT_USER_1_EMAIL}
+      DefaultUsers__1__Email: "${DEFAULT_USER_1_EMAIL}"
       DefaultUsers__1__Password: ${DEFAULT_USER_1_PASSWORD}
-      DefaultUsers__1__HexTransactionColor: ${DEFAULT_USER_1_TRANSACTION_COLOR}
+      DefaultUsers__1__HexTransactionColor: "${DEFAULT_USER_1_TRANSACTION_COLOR}"
     ports:
       - "8082:8080"
     restart: always
