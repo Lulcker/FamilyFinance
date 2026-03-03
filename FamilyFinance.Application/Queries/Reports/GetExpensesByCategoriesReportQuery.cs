@@ -22,7 +22,7 @@ public class GetExpensesByCategoriesReportQuery(IRepository<Category> categoryRe
                 Average = (c.Expenses
                     .Where(e => e.Date.Year == dateTimeUtcNow.Year && dateTimeUtcNow.Month >= e.Date.Month)
                     .Select(e => (double?)e.Amount)
-                    .Average() ?? 0) / dateTimeUtcNow.Month,
+                    .Sum() ?? 0) / dateTimeUtcNow.Month,
                 ExpensesInJanuary = dateTimeUtcNow.Month >= 1 
                     ? c.Expenses
                         .Where(e => e.Date.Year == dateTimeUtcNow.Year && e.Date.Month == 1)
