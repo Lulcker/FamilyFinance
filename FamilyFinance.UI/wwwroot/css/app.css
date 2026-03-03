@@ -172,6 +172,16 @@ code {
     }
 }
 
+.main-large-container {
+    display: flex;
+    flex-direction: column;
+    width: 1200px;
+
+    @media (max-width: 1210px) {
+        width: 100%;
+    }
+}
+
 .my-grid .mud-table-cell {
     padding: 10px;
 }

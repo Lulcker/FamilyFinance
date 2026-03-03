@@ -1,19 +1,25 @@
 ﻿@page "/"
 @page "/report"
 
+@layout MainLargeContainerLayout
+
 <PageTitle>FamilyFinance | Отчёт</PageTitle>
 
-<MudButtonGroup FullWidth OverrideStyles="false" Class="mb-3">
-    <MudButton Color="Color.Primary" Variant="Variant.Filled">
-        Отчёт
-    </MudButton>
-    <MudButton OnClick="GoToExpenses" Color="Color.Primary" Variant="Variant.Outlined">
-        Расходы
-    </MudButton>
-    <MudButton OnClick="GoToIncomes" Color="Color.Primary" Variant="Variant.Outlined">
-        Доходы
-    </MudButton>
-</MudButtonGroup>
+<div class="main-center">
+    <div class="main-container">
+        <MudButtonGroup FullWidth OverrideStyles="false" Class="mb-3">
+            <MudButton Color="Color.Primary" Variant="Variant.Filled">
+                Отчёт
+            </MudButton>
+            <MudButton OnClick="GoToExpenses" Color="Color.Primary" Variant="Variant.Outlined">
+                Расходы
+            </MudButton>
+            <MudButton OnClick="GoToIncomes" Color="Color.Primary" Variant="Variant.Outlined">
+                Доходы
+            </MudButton>
+        </MudButtonGroup>
+    </div>
+</div>
 
 <MudDataGrid Items="expensesByCategories" SortMode="SortMode.None" Class="my-grid mt-2">
     <Columns>
