@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore;
 namespace FamilyFinance.Application.Queries.Incomes;
 
 /// <summary>
-/// Запрос получения всех доходов
+/// Запрос получения всех доходов за текущий год
 /// </summary>
 public class GetAllIncomesQuery(IRepository<Income> incomeRepository)
 {
@@ -14,6 +14,7 @@ public class GetAllIncomesQuery(IRepository<Income> incomeRepository)
     {
         return await incomeRepository
             .AsNoTracking()
+            .Where(x => x.Date.Year == DateTime.UtcNow.Year)
             .Select(i => new IncomeResponseModel
             {
                 Id = i.Id,

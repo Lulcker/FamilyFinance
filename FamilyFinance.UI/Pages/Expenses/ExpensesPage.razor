@@ -35,6 +35,10 @@
 }
 else
 {
+    <MudText Class="mt-2">
+        Расходов за год: <b>@expenses.Sum(i => i.Amount).FormatRubles()</b>
+    </MudText>
+    
     <MudDataGrid Items="expenses" RowStyleFunc="RowStyleFunc" SortMode="SortMode.None" Class="my-grid mt-2">
         <Columns>
             <PropertyColumn Property="@(x => x.Date)" Title="Дата" />

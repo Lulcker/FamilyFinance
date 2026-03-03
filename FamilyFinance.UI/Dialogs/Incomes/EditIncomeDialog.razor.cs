@@ -47,7 +47,7 @@ public partial class EditIncomeDialog(
 
     #region Properties
 
-    private bool IsSaveButtonDisabled => DateOnly.FromDateTime(newIncomeDateTime!.Value)  == income.Date &&
+    private bool IsSaveButtonDisabled => DateOnly.FromDateTime(newIncomeDateTime!.Value) == income.Date &&
                                          newIncomeAmount == income.Amount &&
                                          newIncomeType == income.Type &&
                                          newIncomeComment == income.Comment;

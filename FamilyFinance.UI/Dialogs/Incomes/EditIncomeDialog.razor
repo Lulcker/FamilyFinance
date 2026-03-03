@@ -10,6 +10,7 @@
                          @bind-Value="newIncomeAmount"
                          Variant="Variant.Outlined"
                          Class="mb-3" Min="0" Immediate
+                         Culture="@(new System.Globalization.CultureInfo("ru-RU"))"
                          OnKeyDown="HandleKeyDown" />
         
         <MudSelect T="IncomeType"

@@ -14,3 +14,157 @@
         Доходы
     </MudButton>
 </MudButtonGroup>
+
+<MudDataGrid Items="expensesByCategories" SortMode="SortMode.None" Class="my-grid mt-2">
+    <Columns>
+        <PropertyColumn Property="@(x => x.Name)" Title="Категория" />
+        
+        <TemplateColumn Title="План в месяц">
+            <CellTemplate>
+                <MudText Typo="Typo.body2" Style="white-space: nowrap">
+                    @context.Item.MonthlyPlan.FormatRubles()
+                </MudText>
+            </CellTemplate>
+        </TemplateColumn>
+        
+        <TemplateColumn Title="Среднемесячное значение" CellStyleFunc="CellStyleFunc">
+            <CellTemplate>
+                <MudText Typo="Typo.body2" Style="white-space: nowrap">
+                    @context.Item.Average.FormatRubles()
+                </MudText>
+            </CellTemplate>
+        </TemplateColumn>
+        
+        <TemplateColumn Title="Январь">
+            <CellTemplate>
+                @if (context.Item.ExpensesInJanuary.HasValue)
+                {
+                    <MudText Typo="Typo.body2" Style="white-space: nowrap">
+                        @context.Item.ExpensesInJanuary.Value.FormatRubles()
+                    </MudText>
+                }
+            </CellTemplate>
+        </TemplateColumn>
+        
+        <TemplateColumn Title="Февраль">
+            <CellTemplate>
+                @if (context.Item.ExpensesInFebruary.HasValue)
+                {
+                    <MudText Typo="Typo.body2" Style="white-space: nowrap">
+                        @context.Item.ExpensesInFebruary.Value.FormatRubles()
+                    </MudText>
+                }
+            </CellTemplate>
+        </TemplateColumn>
+        
+        <TemplateColumn Title="Март">
+            <CellTemplate>
+                @if (context.Item.ExpensesInMarch.HasValue)
+                {
+                    <MudText Typo="Typo.body2" Style="white-space: nowrap">
+                        @context.Item.ExpensesInMarch.Value.FormatRubles()
+                    </MudText>
+                }
+            </CellTemplate>
+        </TemplateColumn>
+        
+        <TemplateColumn Title="Апрель">
+            <CellTemplate>
+                @if (context.Item.ExpensesInApril.HasValue)
+                {
+                    <MudText Typo="Typo.body2" Style="white-space: nowrap">
+                        @context.Item.ExpensesInApril.Value.FormatRubles()
+                    </MudText>
+                }
+            </CellTemplate>
+        </TemplateColumn>
+        
+        <TemplateColumn Title="Май">
+            <CellTemplate>
+                @if (context.Item.ExpensesInMay.HasValue)
+                {
+                    <MudText Typo="Typo.body2" Style="white-space: nowrap">
+                        @context.Item.ExpensesInMay.Value.FormatRubles()
+                    </MudText>
+                }
+            </CellTemplate>
+        </TemplateColumn>
+        
+        <TemplateColumn Title="Июнь">
+            <CellTemplate>
+                @if (context.Item.ExpensesInJune.HasValue)
+                {
+                    <MudText Typo="Typo.body2" Style="white-space: nowrap">
+                        @context.Item.ExpensesInJune.Value.FormatRubles()
+                    </MudText>
+                }
+            </CellTemplate>
+        </TemplateColumn>
+        
+        <TemplateColumn Title="Июль">
+            <CellTemplate>
+                @if (context.Item.ExpensesInJuly.HasValue)
+                {
+                    <MudText Typo="Typo.body2" Style="white-space: nowrap">
+                        @context.Item.ExpensesInJuly.Value.FormatRubles()
+                    </MudText>
+                }
+            </CellTemplate>
+        </TemplateColumn>
+        
+        <TemplateColumn Title="Август">
+            <CellTemplate>
+                @if (context.Item.ExpensesInAugust.HasValue)
+                {
+                    <MudText Typo="Typo.body2" Style="white-space: nowrap">
+                        @context.Item.ExpensesInAugust.Value.FormatRubles()
+                    </MudText>
+                }
+            </CellTemplate>
+        </TemplateColumn>
+        
+        <TemplateColumn Title="Сентябрь">
+            <CellTemplate>
+                @if (context.Item.ExpensesInSeptember.HasValue)
+                {
+                    <MudText Typo="Typo.body2" Style="white-space: nowrap">
+                        @context.Item.ExpensesInSeptember.Value.FormatRubles()
+                    </MudText>
+                }
+            </CellTemplate>
+        </TemplateColumn>
+        
+        <TemplateColumn Title="Октябрь">
+            <CellTemplate>
+                @if (context.Item.ExpensesInOctober.HasValue)
+                {
+                    <MudText Typo="Typo.body2" Style="white-space: nowrap">
+                        @context.Item.ExpensesInOctober.Value.FormatRubles()
+                    </MudText>
+                }
+            </CellTemplate>
+        </TemplateColumn>
+        
+        <TemplateColumn Title="Ноябрь">
+            <CellTemplate>
+                @if (context.Item.ExpensesInNovember.HasValue)
+                {
+                    <MudText Typo="Typo.body2" Style="white-space: nowrap">
+                        @context.Item.ExpensesInNovember.Value.FormatRubles()
+                    </MudText>
+                }
+            </CellTemplate>
+        </TemplateColumn>
+        
+        <TemplateColumn Title="Декабрь">
+            <CellTemplate>
+                @if (context.Item.ExpensesInDecember.HasValue)
+                {
+                    <MudText Typo="Typo.body2" Style="white-space: nowrap">
+                        @context.Item.ExpensesInDecember.Value.FormatRubles()
+                    </MudText>
+                }
+            </CellTemplate>
+        </TemplateColumn>
+    </Columns>
+</MudDataGrid>

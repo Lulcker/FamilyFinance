@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore;
 namespace FamilyFinance.Application.Queries.Expenses;
 
 /// <summary>
-/// Получение общих расходов
+/// Получение общих расходов за текущий год
 /// </summary>
 public class AllGeneralExpensesQuery(IRepository<Expense> expenseRepository)
 {
@@ -14,6 +14,7 @@ public class AllGeneralExpensesQuery(IRepository<Expense> expenseRepository)
     {
         return await expenseRepository
             .AsNoTracking()
+            .Where(x => x.Date.Year == DateTime.UtcNow.Year)
             .Where(e => !e.IsPersonal)
             .Select(e => new ExpenseResponseModel
             {
