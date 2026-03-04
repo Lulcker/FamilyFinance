@@ -11,12 +11,16 @@ public class GetExpensesByCategoriesReportQuery(IRepository<Category> categoryRe
     public async Task<IReadOnlyCollection<ExpensesByCategoryResponseModel>> ExecuteAsync(ExpensesByCategoryRequestModel requestModel, CancellationToken cancellationToken)
     {
         var dateTimeUtcNow = DateTime.UtcNow;
+
+        var query = categoryRepository
+            .AsNoTracking();
+
+        if (requestModel.ExcludeCategoryIds.Count != 0)
+            query = query.Where(c => !requestModel.ExcludeCategoryIds.Contains(c.Id));
         
-        return await categoryRepository
-            .AsNoTracking()
+        var result = await query
             .Select(c => new ExpensesByCategoryResponseModel
             {
-                Id = c.Id,
                 Name = c.Name,
                 MonthlyPlan = c.MonthlyPlan,
                 Average = (c.Expenses
@@ -86,5 +90,50 @@ public class GetExpensesByCategoriesReportQuery(IRepository<Category> categoryRe
             })
             .OrderBy(c => c.Name)
             .ToListAsync(cancellationToken);
+        
+        result.Add(new ExpensesByCategoryResponseModel
+        {
+            Name = "Итого",
+            MonthlyPlan = result.Sum(r => r.MonthlyPlan),
+            Average = result.Sum(r => r.Average),
+            ExpensesInJanuary = result.Any(r => r.ExpensesInJanuary.HasValue) 
+                ? result.Sum(r => r.ExpensesInJanuary) 
+                : null,
+            ExpensesInFebruary = result.Any(r => r.ExpensesInFebruary.HasValue) 
+                ? result.Sum(r => r.ExpensesInFebruary) 
+                : null,
+            ExpensesInMarch = result.Any(r => r.ExpensesInMarch.HasValue) 
+                ? result.Sum(r => r.ExpensesInMarch) 
+                : null,
+            ExpensesInApril = result.Any(r => r.ExpensesInApril.HasValue) 
+                ? result.Sum(r => r.ExpensesInApril) 
+                : null,
+            ExpensesInMay = result.Any(r => r.ExpensesInMay.HasValue) 
+                ? result.Sum(r => r.ExpensesInMay) 
+                : null,
+            ExpensesInJune = result.Any(r => r.ExpensesInJune.HasValue) 
+                ? result.Sum(r => r.ExpensesInJune) 
+                : null,
+            ExpensesInJuly = result.Any(r => r.ExpensesInJuly.HasValue) 
+                ? result.Sum(r => r.ExpensesInJuly) 
+                : null,
+            ExpensesInAugust = result.Any(r => r.ExpensesInAugust.HasValue) 
+                ? result.Sum(r => r.ExpensesInAugust) 
+                : null,
+            ExpensesInSeptember = result.Any(r => r.ExpensesInSeptember.HasValue) 
+                ? result.Sum(r => r.ExpensesInSeptember) 
+                : null,
+            ExpensesInOctober = result.Any(r => r.ExpensesInOctober.HasValue) 
+                ? result.Sum(r => r.ExpensesInOctober) 
+                : null,
+            ExpensesInNovember = result.Any(r => r.ExpensesInNovember.HasValue) 
+                ? result.Sum(r => r.ExpensesInNovember) 
+                : null,
+            ExpensesInDecember = result.Any(r => r.ExpensesInDecember.HasValue) 
+                ? result.Sum(r => r.ExpensesInDecember) 
+                : null
+        });
+
+        return result;
     }
 }

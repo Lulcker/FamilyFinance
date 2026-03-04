@@ -50,9 +50,78 @@ public partial class ReportPage(
     
     private void GoToIncomes() =>
         navigationManager.NavigateTo("/incomes");
+    
+    private static string BoldTextStyle(ExpensesByCategoryResponseModel expensesByCategory) =>
+        expensesByCategory.Name is "Итого" ? "font-weight: bold" : string.Empty;
 
-    private static Func<ExpensesByCategoryResponseModel, string> CellStyleFunc => expensesByCategory =>
+    #endregion
+
+    #region Funfs
+
+    private static Func<ExpensesByCategoryResponseModel, string> NameStyleFunc => BoldTextStyle;
+
+    private static Func<ExpensesByCategoryResponseModel, string> AverageStyleFunc => expensesByCategory =>
         expensesByCategory.Average > expensesByCategory.MonthlyPlan
+            ? "background-color: #f4c7c3"
+            : string.Empty;
+    
+    private static Func<ExpensesByCategoryResponseModel, string> JanuaryStyleFunc => expensesByCategory =>
+        expensesByCategory.ExpensesInJanuary > expensesByCategory.MonthlyPlan
+            ? "background-color: #f4c7c3"
+            : string.Empty;
+    
+    private static Func<ExpensesByCategoryResponseModel, string> FebruaryStyleFunc => expensesByCategory =>
+        expensesByCategory.ExpensesInFebruary > expensesByCategory.MonthlyPlan
+            ? "background-color: #f4c7c3"
+            : string.Empty;
+    
+    private static Func<ExpensesByCategoryResponseModel, string> MarchStyleFunc => expensesByCategory =>
+        expensesByCategory.ExpensesInMarch > expensesByCategory.MonthlyPlan
+            ? "background-color: #f4c7c3"
+            : string.Empty;
+    
+    private static Func<ExpensesByCategoryResponseModel, string> AprilStyleFunc => expensesByCategory =>
+        expensesByCategory.ExpensesInApril > expensesByCategory.MonthlyPlan
+            ? "background-color: #f4c7c3"
+            : string.Empty;
+    
+    private static Func<ExpensesByCategoryResponseModel, string> MayStyleFunc => expensesByCategory =>
+        expensesByCategory.ExpensesInMay > expensesByCategory.MonthlyPlan
+            ? "background-color: #f4c7c3"
+            : string.Empty;
+    
+    private static Func<ExpensesByCategoryResponseModel, string> JuneStyleFunc => expensesByCategory =>
+        expensesByCategory.ExpensesInJune > expensesByCategory.MonthlyPlan
+            ? "background-color: #f4c7c3"
+            : string.Empty;
+    
+    private static Func<ExpensesByCategoryResponseModel, string> JulyStyleFunc => expensesByCategory =>
+        expensesByCategory.ExpensesInJuly > expensesByCategory.MonthlyPlan
+            ? "background-color: #f4c7c3"
+            : string.Empty;
+    
+    private static Func<ExpensesByCategoryResponseModel, string> AugustStyleFunc => expensesByCategory =>
+        expensesByCategory.ExpensesInAugust > expensesByCategory.MonthlyPlan
+            ? "background-color: #f4c7c3"
+            : string.Empty;
+    
+    private static Func<ExpensesByCategoryResponseModel, string> SeptemberStyleFunc => expensesByCategory =>
+        expensesByCategory.ExpensesInSeptember > expensesByCategory.MonthlyPlan
+            ? "background-color: #f4c7c3"
+            : string.Empty;
+    
+    private static Func<ExpensesByCategoryResponseModel, string> OctoberStyleFunc => expensesByCategory =>
+        expensesByCategory.ExpensesInOctober > expensesByCategory.MonthlyPlan
+            ? "background-color: #f4c7c3"
+            : string.Empty;
+    
+    private static Func<ExpensesByCategoryResponseModel, string> NovemberStyleFunc => expensesByCategory =>
+        expensesByCategory.ExpensesInNovember > expensesByCategory.MonthlyPlan
+            ? "background-color: #f4c7c3"
+            : string.Empty;
+    
+    private static Func<ExpensesByCategoryResponseModel, string> DecemberStyleFunc => expensesByCategory =>
+        expensesByCategory.ExpensesInDecember > expensesByCategory.MonthlyPlan
             ? "background-color: #f4c7c3"
             : string.Empty;
 

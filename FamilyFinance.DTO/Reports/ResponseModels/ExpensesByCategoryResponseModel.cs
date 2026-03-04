@@ -6,11 +6,6 @@
 public class ExpensesByCategoryResponseModel
 {
     /// <summary>
-    /// Id категории
-    /// </summary>
-    public required Guid Id { get; init; }
-    
-    /// <summary>
     /// Название категории
     /// </summary>
     public required string Name { get; init; }

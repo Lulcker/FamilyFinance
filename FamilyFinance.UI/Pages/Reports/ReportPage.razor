@@ -21,152 +21,152 @@
     </div>
 </div>
 
-<MudDataGrid Items="expensesByCategories" SortMode="SortMode.None" Class="my-grid mt-2">
+<MudDataGrid Items="expensesByCategories" SortMode="SortMode.None" Class="my-grid mt-2 mb-3">
     <Columns>
-        <PropertyColumn Property="@(x => x.Name)" Title="Категория" />
+        <PropertyColumn Property="@(x => x.Name)" Title="Категория" CellStyleFunc="NameStyleFunc" />
         
         <TemplateColumn Title="План в месяц">
             <CellTemplate>
-                <MudText Typo="Typo.body2" Style="white-space: nowrap">
+                <MudText Typo="Typo.body2" Style="@($"white-space: nowrap; {BoldTextStyle(context.Item)}")">
                     @context.Item.MonthlyPlan.FormatRubles()
                 </MudText>
             </CellTemplate>
         </TemplateColumn>
         
-        <TemplateColumn Title="Среднемесячное значение" CellStyleFunc="CellStyleFunc">
+        <TemplateColumn Title="Среднемесячное значение" CellStyleFunc="AverageStyleFunc">
             <CellTemplate>
-                <MudText Typo="Typo.body2" Style="white-space: nowrap">
+                <MudText Typo="Typo.body2" Style="@($"white-space: nowrap; {BoldTextStyle(context.Item)}")">
                     @context.Item.Average.FormatRubles()
                 </MudText>
             </CellTemplate>
         </TemplateColumn>
         
-        <TemplateColumn Title="Январь">
+        <TemplateColumn Title="Январь" CellStyleFunc="JanuaryStyleFunc">
             <CellTemplate>
                 @if (context.Item.ExpensesInJanuary.HasValue)
                 {
-                    <MudText Typo="Typo.body2" Style="white-space: nowrap">
+                    <MudText Typo="Typo.body2" Style="@($"white-space: nowrap; {BoldTextStyle(context.Item)}")">
                         @context.Item.ExpensesInJanuary.Value.FormatRubles()
                     </MudText>
                 }
             </CellTemplate>
         </TemplateColumn>
         
-        <TemplateColumn Title="Февраль">
+        <TemplateColumn Title="Февраль" CellStyleFunc="FebruaryStyleFunc">
             <CellTemplate>
                 @if (context.Item.ExpensesInFebruary.HasValue)
                 {
-                    <MudText Typo="Typo.body2" Style="white-space: nowrap">
+                    <MudText Typo="Typo.body2" Style="@($"white-space: nowrap; {BoldTextStyle(context.Item)}")">
                         @context.Item.ExpensesInFebruary.Value.FormatRubles()
                     </MudText>
                 }
             </CellTemplate>
         </TemplateColumn>
         
-        <TemplateColumn Title="Март">
+        <TemplateColumn Title="Март" CellStyleFunc="MarchStyleFunc">
             <CellTemplate>
                 @if (context.Item.ExpensesInMarch.HasValue)
                 {
-                    <MudText Typo="Typo.body2" Style="white-space: nowrap">
+                    <MudText Typo="Typo.body2" Style="@($"white-space: nowrap; {BoldTextStyle(context.Item)}")">
                         @context.Item.ExpensesInMarch.Value.FormatRubles()
                     </MudText>
                 }
             </CellTemplate>
         </TemplateColumn>
         
-        <TemplateColumn Title="Апрель">
+        <TemplateColumn Title="Апрель" CellStyleFunc="AprilStyleFunc">
             <CellTemplate>
                 @if (context.Item.ExpensesInApril.HasValue)
                 {
-                    <MudText Typo="Typo.body2" Style="white-space: nowrap">
+                    <MudText Typo="Typo.body2" Style="@($"white-space: nowrap; {BoldTextStyle(context.Item)}")">
                         @context.Item.ExpensesInApril.Value.FormatRubles()
                     </MudText>
                 }
             </CellTemplate>
         </TemplateColumn>
         
-        <TemplateColumn Title="Май">
+        <TemplateColumn Title="Май" CellStyleFunc="MayStyleFunc">
             <CellTemplate>
                 @if (context.Item.ExpensesInMay.HasValue)
                 {
-                    <MudText Typo="Typo.body2" Style="white-space: nowrap">
+                    <MudText Typo="Typo.body2" Style="@($"white-space: nowrap; {BoldTextStyle(context.Item)}")">
                         @context.Item.ExpensesInMay.Value.FormatRubles()
                     </MudText>
                 }
             </CellTemplate>
         </TemplateColumn>
         
-        <TemplateColumn Title="Июнь">
+        <TemplateColumn Title="Июнь" CellStyleFunc="JuneStyleFunc">
             <CellTemplate>
                 @if (context.Item.ExpensesInJune.HasValue)
                 {
-                    <MudText Typo="Typo.body2" Style="white-space: nowrap">
+                    <MudText Typo="Typo.body2" Style="@($"white-space: nowrap; {BoldTextStyle(context.Item)}")">
                         @context.Item.ExpensesInJune.Value.FormatRubles()
                     </MudText>
                 }
             </CellTemplate>
         </TemplateColumn>
         
-        <TemplateColumn Title="Июль">
+        <TemplateColumn Title="Июль" CellStyleFunc="JulyStyleFunc">
             <CellTemplate>
                 @if (context.Item.ExpensesInJuly.HasValue)
                 {
-                    <MudText Typo="Typo.body2" Style="white-space: nowrap">
+                    <MudText Typo="Typo.body2" Style="@($"white-space: nowrap; {BoldTextStyle(context.Item)}")">
                         @context.Item.ExpensesInJuly.Value.FormatRubles()
                     </MudText>
                 }
             </CellTemplate>
         </TemplateColumn>
         
-        <TemplateColumn Title="Август">
+        <TemplateColumn Title="Август" CellStyleFunc="AugustStyleFunc">
             <CellTemplate>
                 @if (context.Item.ExpensesInAugust.HasValue)
                 {
-                    <MudText Typo="Typo.body2" Style="white-space: nowrap">
+                    <MudText Typo="Typo.body2" Style="@($"white-space: nowrap; {BoldTextStyle(context.Item)}")">
                         @context.Item.ExpensesInAugust.Value.FormatRubles()
                     </MudText>
                 }
             </CellTemplate>
         </TemplateColumn>
         
-        <TemplateColumn Title="Сентябрь">
+        <TemplateColumn Title="Сентябрь" CellStyleFunc="SeptemberStyleFunc">
             <CellTemplate>
                 @if (context.Item.ExpensesInSeptember.HasValue)
                 {
-                    <MudText Typo="Typo.body2" Style="white-space: nowrap">
+                    <MudText Typo="Typo.body2" Style="@($"white-space: nowrap; {BoldTextStyle(context.Item)}")">
                         @context.Item.ExpensesInSeptember.Value.FormatRubles()
                     </MudText>
                 }
             </CellTemplate>
         </TemplateColumn>
         
-        <TemplateColumn Title="Октябрь">
+        <TemplateColumn Title="Октябрь" CellStyleFunc="OctoberStyleFunc">
             <CellTemplate>
                 @if (context.Item.ExpensesInOctober.HasValue)
                 {
-                    <MudText Typo="Typo.body2" Style="white-space: nowrap">
+                    <MudText Typo="Typo.body2" Style="@($"white-space: nowrap; {BoldTextStyle(context.Item)}")">
                         @context.Item.ExpensesInOctober.Value.FormatRubles()
                     </MudText>
                 }
             </CellTemplate>
         </TemplateColumn>
         
-        <TemplateColumn Title="Ноябрь">
+        <TemplateColumn Title="Ноябрь" CellStyleFunc="NovemberStyleFunc">
             <CellTemplate>
                 @if (context.Item.ExpensesInNovember.HasValue)
                 {
-                    <MudText Typo="Typo.body2" Style="white-space: nowrap">
+                    <MudText Typo="Typo.body2" Style="@($"white-space: nowrap; {BoldTextStyle(context.Item)}")">
                         @context.Item.ExpensesInNovember.Value.FormatRubles()
                     </MudText>
                 }
             </CellTemplate>
         </TemplateColumn>
         
-        <TemplateColumn Title="Декабрь">
+        <TemplateColumn Title="Декабрь" CellStyleFunc="DecemberStyleFunc">
             <CellTemplate>
                 @if (context.Item.ExpensesInDecember.HasValue)
                 {
-                    <MudText Typo="Typo.body2" Style="white-space: nowrap">
+                    <MudText Typo="Typo.body2" Style="@($"white-space: nowrap; {BoldTextStyle(context.Item)}")">
                         @context.Item.ExpensesInDecember.Value.FormatRubles()
                     </MudText>
                 }
