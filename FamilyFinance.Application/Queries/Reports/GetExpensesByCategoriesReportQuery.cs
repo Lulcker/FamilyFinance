@@ -24,67 +24,67 @@ public class GetExpensesByCategoriesReportQuery(IRepository<Category> categoryRe
                 Name = c.Name,
                 MonthlyPlan = c.MonthlyPlan,
                 Average = (c.Expenses
-                    .Where(e => e.Date.Year == dateTimeUtcNow.Year && dateTimeUtcNow.Month >= e.Date.Month)
+                    .Where(e => !e.IsPersonal && e.Date.Year == dateTimeUtcNow.Year && dateTimeUtcNow.Month >= e.Date.Month)
                     .Select(e => (double?)e.Amount)
                     .Sum() ?? 0) / dateTimeUtcNow.Month,
                 ExpensesInJanuary = dateTimeUtcNow.Month >= 1 
                     ? c.Expenses
-                        .Where(e => e.Date.Year == dateTimeUtcNow.Year && e.Date.Month == 1)
+                        .Where(e => !e.IsPersonal && e.Date.Year == dateTimeUtcNow.Year && e.Date.Month == 1)
                         .Sum(e => e.Amount)
                     : null,
                 ExpensesInFebruary = dateTimeUtcNow.Month >= 2
                     ? c.Expenses
-                        .Where(e => e.Date.Year == dateTimeUtcNow.Year && e.Date.Month == 2)
+                        .Where(e => !e.IsPersonal && e.Date.Year == dateTimeUtcNow.Year && e.Date.Month == 2)
                         .Sum(e => e.Amount)
                     : null,
                 ExpensesInMarch = dateTimeUtcNow.Month >= 3
                     ? c.Expenses
-                        .Where(e => e.Date.Year == dateTimeUtcNow.Year && e.Date.Month == 3)
+                        .Where(e => !e.IsPersonal && e.Date.Year == dateTimeUtcNow.Year && e.Date.Month == 3)
                         .Sum(e => e.Amount)
                     : null,
                 ExpensesInApril = dateTimeUtcNow.Month >= 4 
                     ? c.Expenses
-                        .Where(e => e.Date.Year == dateTimeUtcNow.Year && e.Date.Month == 4)
+                        .Where(e => !e.IsPersonal && e.Date.Year == dateTimeUtcNow.Year && e.Date.Month == 4)
                         .Sum(e => e.Amount)
                     : null,
                 ExpensesInMay = dateTimeUtcNow.Month >= 5
                     ? c.Expenses
-                        .Where(e => e.Date.Year == dateTimeUtcNow.Year && e.Date.Month == 5)
+                        .Where(e => !e.IsPersonal && e.Date.Year == dateTimeUtcNow.Year && e.Date.Month == 5)
                         .Sum(e => e.Amount)
                     : null,
                 ExpensesInJune = dateTimeUtcNow.Month >= 6
                     ? c.Expenses
-                        .Where(e => e.Date.Year == dateTimeUtcNow.Year && e.Date.Month == 6)
+                        .Where(e => !e.IsPersonal && e.Date.Year == dateTimeUtcNow.Year && e.Date.Month == 6)
                         .Sum(e => e.Amount)
                     : null,
                 ExpensesInJuly = dateTimeUtcNow.Month >= 7
                     ? c.Expenses
-                        .Where(e => e.Date.Year == dateTimeUtcNow.Year && e.Date.Month == 7)
+                        .Where(e => !e.IsPersonal && e.Date.Year == dateTimeUtcNow.Year && e.Date.Month == 7)
                         .Sum(e => e.Amount)
                     : null,
                 ExpensesInAugust = dateTimeUtcNow.Month >= 8
                     ? c.Expenses
-                        .Where(e => e.Date.Year == dateTimeUtcNow.Year && e.Date.Month == 8)
+                        .Where(e => !e.IsPersonal && e.Date.Year == dateTimeUtcNow.Year && e.Date.Month == 8)
                         .Sum(e => e.Amount)
                     : null,
                 ExpensesInSeptember = dateTimeUtcNow.Month >= 9
                     ? c.Expenses
-                        .Where(e => e.Date.Year == dateTimeUtcNow.Year && e.Date.Month == 9)
+                        .Where(e => !e.IsPersonal && e.Date.Year == dateTimeUtcNow.Year && e.Date.Month == 9)
                         .Sum(e => e.Amount)
                     : null,
                 ExpensesInOctober = dateTimeUtcNow.Month >= 10
                     ? c.Expenses
-                        .Where(e => e.Date.Year == dateTimeUtcNow.Year && e.Date.Month == 10)
+                        .Where(e => !e.IsPersonal && e.Date.Year == dateTimeUtcNow.Year && e.Date.Month == 10)
                         .Sum(e => e.Amount)
                     : null,
                 ExpensesInNovember = dateTimeUtcNow.Month >= 11
                     ? c.Expenses
-                        .Where(e => e.Date.Year == dateTimeUtcNow.Year && e.Date.Month == 11)
+                        .Where(e => !e.IsPersonal && e.Date.Year == dateTimeUtcNow.Year && e.Date.Month == 11)
                         .Sum(e => e.Amount)
                     : null,
                 ExpensesInDecember = dateTimeUtcNow.Month >= 12
                     ? c.Expenses
-                        .Where(e => e.Date.Year == dateTimeUtcNow.Year && e.Date.Month == 12)
+                        .Where(e => !e.IsPersonal && e.Date.Year == dateTimeUtcNow.Year && e.Date.Month == 12)
                         .Sum(e => e.Amount)
                     : null
             })

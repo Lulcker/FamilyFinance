@@ -25,7 +25,8 @@ public class AllGeneralExpensesQuery(IRepository<Expense> expenseRepository)
                 CategoryId = e.CategoryId,
                 CategoryName = e.Category.Name,
                 HexTransactionColor = e.User.HexTransactionColor,
-                Comment = e.Comment
+                Comment = e.Comment,
+                IsPersonal = e.IsPersonal
             })
             .OrderByDescending(e => e.Date)
             .ToListAsync(cancellationToken);

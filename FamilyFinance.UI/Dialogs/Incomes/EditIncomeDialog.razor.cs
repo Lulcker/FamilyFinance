@@ -27,7 +27,7 @@ public partial class EditIncomeDialog(
 
     private DateTime? newIncomeDateTime;
 
-    private double newIncomeAmount;
+    private double? newIncomeAmount;
 
     private IncomeType newIncomeType;
 
@@ -47,17 +47,18 @@ public partial class EditIncomeDialog(
 
     #region Properties
 
-    private bool IsSaveButtonDisabled => DateOnly.FromDateTime(newIncomeDateTime!.Value) == income.Date &&
-                                         newIncomeAmount == income.Amount &&
-                                         newIncomeType == income.Type &&
-                                         newIncomeComment == income.Comment;
-                                         
+    private bool IsSaveButtonDisabled => !newIncomeAmount.HasValue ||
+                                         newIncomeAmount <= 0 ||
+                                         (DateOnly.FromDateTime(newIncomeDateTime!.Value) == income.Date &&
+                                          newIncomeAmount == income.Amount &&
+                                          newIncomeType == income.Type &&
+                                          newIncomeComment == income.Comment);
 
     #endregion
     
     #region Methods
 
-    public void Open(IncomeResponseModel incomeResponseModel)
+    public async Task OpenAsync(IncomeResponseModel incomeResponseModel)
     {
         income = incomeResponseModel;
 
@@ -67,7 +68,9 @@ public partial class EditIncomeDialog(
         newIncomeComment = income.Comment;
         
         isOpened = true;
-        StateHasChanged();
+        
+        await Task.Yield();
+        await InvokeAsync(StateHasChanged);
     }
     
     private async Task SaveAsync()
@@ -83,7 +86,7 @@ public partial class EditIncomeDialog(
             {
                 Id = income.Id,
                 Date = DateOnly.FromDateTime(newIncomeDateTime!.Value),
-                Amount = newIncomeAmount,
+                Amount = newIncomeAmount!.Value,
                 Type = newIncomeType,
                 Comment = newIncomeComment
             });

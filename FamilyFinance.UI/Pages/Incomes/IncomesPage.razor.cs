@@ -113,8 +113,8 @@ public partial class IncomesPage(
         }
     }
 
-    private void OpenEditDialog(IncomeResponseModel income) =>
-        editIncomeDialog.Open(income);
+    private async Task OpenEditDialogAsync(IncomeResponseModel income) => 
+        await editIncomeDialog.OpenAsync(income);
 
     private async Task DeleteIncomeAsync(Guid incomeId)
     {

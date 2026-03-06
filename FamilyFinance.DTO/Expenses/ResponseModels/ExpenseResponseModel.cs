@@ -44,4 +44,9 @@ public class ExpenseResponseModel
     /// Комментарий
     /// </summary>
     public required string? Comment { get; init; }
+    
+    /// <summary>
+    /// Личная трата
+    /// </summary>
+    public required bool IsPersonal { get; init; }
 }

@@ -120,7 +120,7 @@ else
                     {
                         <MudStack Row AlignItems="AlignItems.Center" Wrap="Wrap.Wrap" Spacing="1">
                             <MudIconButton Icon="@Icons.Material.Filled.Edit"
-                                           OnClick="@(() => OpenEditDialog(income))"
+                                           OnClick="@(() => OpenEditDialogAsync(income))"
                                            Size="Size.Small" />
                             <MudIconButton Icon="@Icons.Material.Filled.Delete"
                                            OnClick="@(() => DeleteIncomeAsync(income.Id))"

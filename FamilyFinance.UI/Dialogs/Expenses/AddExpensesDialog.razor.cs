@@ -8,12 +8,14 @@ using MudBlazor;
 namespace FamilyFinance.UI.Dialogs.Expenses;
 
 public partial class AddExpensesDialog(
-    CategoriesApiHelper categoriesApiHelper,
     ExpensesApiHelper expensesApiHelper,
     ISnackbarHelper snackbarHelper
     ) : ComponentBase
 {
     #region Parameters
+    
+    [Parameter, EditorRequired]
+    public required List<CategoryResponseModel> Categories { get; set; }
 
     [Parameter, EditorRequired]
     public required EventCallback AfterSave { get; set; }
@@ -21,8 +23,6 @@ public partial class AddExpensesDialog(
     #endregion
     
     #region Fields
-
-    private List<CategoryResponseModel> categories = [];
 
     private List<AddExpenseRequestModel> newExpenses = [];
 
@@ -118,16 +118,11 @@ public partial class AddExpensesDialog(
         StateHasChanged();
     }
 
-    public async Task OpenAsync()
+    public void Open()
     {
-        await LoadCategories();
-        
         isOpened = true;
         StateHasChanged();
     }
-
-    private async Task LoadCategories() =>
-        categories = [.. await categoriesApiHelper.AllAsync()];
     
     private async Task SaveAsync()
     {
@@ -155,7 +150,6 @@ public partial class AddExpensesDialog(
     {
         isOpened = false;
 
-        categories = [];
         creatingDate = false;
         creatingDateDateTime = null;
         dateGroups = [];
@@ -166,7 +160,7 @@ public partial class AddExpensesDialog(
     }
 
     private string GetCategoryName(Guid categoryId) =>
-        categories.First(c => c.Id == categoryId).Name;
+        Categories.First(c => c.Id == categoryId).Name;
 
     #endregion
     

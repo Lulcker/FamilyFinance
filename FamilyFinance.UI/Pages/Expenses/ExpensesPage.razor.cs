@@ -1,4 +1,5 @@
-﻿using FamilyFinance.DTO.Expenses.ResponseModels;
+﻿using FamilyFinance.DTO.Categories.ResponseModels;
+using FamilyFinance.DTO.Expenses.ResponseModels;
 using FamilyFinance.ProxyApiMethods.ApiMethods;
 using FamilyFinance.UI.Contracts;
 using FamilyFinance.UI.Dialogs.Expenses;
@@ -9,6 +10,7 @@ namespace FamilyFinance.UI.Pages.Expenses;
 
 public partial class ExpensesPage(
     ExpensesApiHelper expensesApiHelper,
+    CategoriesApiHelper categoriesApiHelper,
     IBreadcrumbHelper breadcrumbHelper,
     ISnackbarHelper snackbarHelper,
     IUserSession userSession,
@@ -18,6 +20,8 @@ public partial class ExpensesPage(
     #region Fields
 
     private List<ExpenseResponseModel> expenses = [];
+
+    private List<CategoryResponseModel> categories = [];
 
     private bool isLoading;
 
@@ -29,6 +33,8 @@ public partial class ExpensesPage(
 
     private AddExpensesDialog addExpensesDialog = null!;
 
+    private EditExpenseDialog editExpenseDialog = null!;
+
     #endregion
     
     #region Methods
@@ -39,6 +45,8 @@ public partial class ExpensesPage(
         [
             new BreadcrumbItem("Расходы", "/expenses")
         ]);
+        
+        await LoadCategories();
         
         await LoadDataAsync();
     }
@@ -54,6 +62,9 @@ public partial class ExpensesPage(
         
         isLoading = false;
     }
+    
+    private async Task LoadCategories() =>
+        categories = [.. await categoriesApiHelper.AllAsync()];
 
     private async Task IsGeneralExpensesChange(bool value)
     {
@@ -62,8 +73,11 @@ public partial class ExpensesPage(
         await LoadDataAsync();
     }
 
-    private async Task OpenAddExpensesDialog() =>
-        await addExpensesDialog.OpenAsync();
+    private void OpenAddExpensesDialog() =>
+        addExpensesDialog.Open();
+
+    private async Task OpenEditExpenseDialogAsync(ExpenseResponseModel expense) =>
+        await editExpenseDialog.OpenAsync(expense);
     
     private async Task DeleteExpenseAsync(Guid expenseId)
     {

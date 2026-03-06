@@ -6,11 +6,11 @@
         </MudStack>
     </TitleContent>
     <DialogContent>
-        <MudNumericField Label="Сумма дохода" Required
+        <MudNumericField T="double?" Label="Сумма дохода" Required
                          @bind-Value="newIncomeAmount"
+                         RequiredError="Сумма дохода обязательна"
                          Variant="Variant.Outlined"
                          Class="mb-3" Min="0" Immediate
-                         Culture="@(new System.Globalization.CultureInfo("ru-RU"))"
                          OnKeyDown="HandleKeyDown" />
         
         <MudSelect T="IncomeType"
