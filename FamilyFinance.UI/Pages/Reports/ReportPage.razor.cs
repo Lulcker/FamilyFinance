@@ -1,4 +1,5 @@
-﻿using FamilyFinance.DTO.Reports.RequestModels;
+﻿using FamilyFinance.DTO.Categories.ResponseModels;
+using FamilyFinance.DTO.Reports.RequestModels;
 using FamilyFinance.DTO.Reports.ResponseModels;
 using FamilyFinance.ProxyApiMethods.ApiMethods;
 using FamilyFinance.UI.Contracts;
@@ -8,6 +9,7 @@ using MudBlazor;
 namespace FamilyFinance.UI.Pages.Reports;
 
 public partial class ReportPage(
+    CategoriesApiHelper categoriesApiHelper,
     ReportsApiHelper reportsApiHelper,
     IBreadcrumbHelper breadcrumbHelper,
     NavigationManager navigationManager
@@ -18,6 +20,10 @@ public partial class ReportPage(
     private bool isLoading;
 
     private List<ExpensesByCategoryResponseModel> expensesByCategories = [];
+
+    private List<CategoryResponseModel> categories = [];
+
+    private List<CategoryResponseModel> excludeCategories = [];
 
     #endregion
 
@@ -30,6 +36,8 @@ public partial class ReportPage(
             new BreadcrumbItem("Отчёт", "/")
         ]);
 
+        await LoadCategories();
+        
         await LoadDataAsync();
     }
 
@@ -39,10 +47,20 @@ public partial class ReportPage(
 
         expensesByCategories = [.. await reportsApiHelper.ExpensesByCategoriesAsync(new ExpensesByCategoryRequestModel
         {
-            ExcludeCategoryIds = []
+            ExcludeCategoryIds = [.. excludeCategories.Select(c => c.Id)]
         })];
 
         isLoading = false;
+    }
+
+    private async Task LoadCategories() =>
+        categories = [.. await categoriesApiHelper.AllAsync()];
+
+    private async Task ExcludeCategoryIdsChanged(IEnumerable<CategoryResponseModel>? categoryResponseModels)
+    {
+        excludeCategories = categoryResponseModels is not null ? categoryResponseModels.ToList() : [];
+
+        await LoadDataAsync();
     }
     
     private void GoToExpenses() =>

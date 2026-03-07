@@ -22,9 +22,22 @@
 </div>
 
 <MudDataGrid Items="expensesByCategories" SortMode="SortMode.None" Class="my-grid mt-2 mb-3">
+    <ToolBarContent>
+        <div class="exclude-categories-container">
+            <MudSelect T="CategoryResponseModel" Label="Исключить категории" MultiSelection
+                       SelectedValues="excludeCategories" Immediate Dense
+                       ToStringFunc="@(c => c!.Name)"
+                       SelectedValuesChanged="@(values => ExcludeCategoryIdsChanged(values!))">
+                @foreach (var category in categories)
+                {
+                    <MudSelectItem Value="category">@category.Name</MudSelectItem>
+                }
+            </MudSelect>
+        </div>
+    </ToolBarContent>
     <Columns>
-        <PropertyColumn Property="@(x => x.Name)" Title="Категория" CellStyleFunc="NameStyleFunc" />
-        
+        <PropertyColumn Property="@(x => x.Name)" Title="Категория" CellStyleFunc="NameStyleFunc"/>
+
         <TemplateColumn Title="План в месяц">
             <CellTemplate>
                 <MudText Typo="Typo.body2" Style="@($"white-space: nowrap; {BoldTextStyle(context.Item)}")">
@@ -32,7 +45,7 @@
                 </MudText>
             </CellTemplate>
         </TemplateColumn>
-        
+
         <TemplateColumn Title="Среднемесячное значение" CellStyleFunc="AverageStyleFunc">
             <CellTemplate>
                 <MudText Typo="Typo.body2" Style="@($"white-space: nowrap; {BoldTextStyle(context.Item)}")">
@@ -40,7 +53,7 @@
                 </MudText>
             </CellTemplate>
         </TemplateColumn>
-        
+
         <TemplateColumn Title="Январь" CellStyleFunc="JanuaryStyleFunc">
             <CellTemplate>
                 @if (context.Item.ExpensesInJanuary.HasValue)
@@ -51,7 +64,7 @@
                 }
             </CellTemplate>
         </TemplateColumn>
-        
+
         <TemplateColumn Title="Февраль" CellStyleFunc="FebruaryStyleFunc">
             <CellTemplate>
                 @if (context.Item.ExpensesInFebruary.HasValue)
@@ -62,7 +75,7 @@
                 }
             </CellTemplate>
         </TemplateColumn>
-        
+
         <TemplateColumn Title="Март" CellStyleFunc="MarchStyleFunc">
             <CellTemplate>
                 @if (context.Item.ExpensesInMarch.HasValue)
@@ -73,7 +86,7 @@
                 }
             </CellTemplate>
         </TemplateColumn>
-        
+
         <TemplateColumn Title="Апрель" CellStyleFunc="AprilStyleFunc">
             <CellTemplate>
                 @if (context.Item.ExpensesInApril.HasValue)
@@ -84,7 +97,7 @@
                 }
             </CellTemplate>
         </TemplateColumn>
-        
+
         <TemplateColumn Title="Май" CellStyleFunc="MayStyleFunc">
             <CellTemplate>
                 @if (context.Item.ExpensesInMay.HasValue)
@@ -95,7 +108,7 @@
                 }
             </CellTemplate>
         </TemplateColumn>
-        
+
         <TemplateColumn Title="Июнь" CellStyleFunc="JuneStyleFunc">
             <CellTemplate>
                 @if (context.Item.ExpensesInJune.HasValue)
@@ -106,7 +119,7 @@
                 }
             </CellTemplate>
         </TemplateColumn>
-        
+
         <TemplateColumn Title="Июль" CellStyleFunc="JulyStyleFunc">
             <CellTemplate>
                 @if (context.Item.ExpensesInJuly.HasValue)
@@ -117,7 +130,7 @@
                 }
             </CellTemplate>
         </TemplateColumn>
-        
+
         <TemplateColumn Title="Август" CellStyleFunc="AugustStyleFunc">
             <CellTemplate>
                 @if (context.Item.ExpensesInAugust.HasValue)
@@ -128,7 +141,7 @@
                 }
             </CellTemplate>
         </TemplateColumn>
-        
+
         <TemplateColumn Title="Сентябрь" CellStyleFunc="SeptemberStyleFunc">
             <CellTemplate>
                 @if (context.Item.ExpensesInSeptember.HasValue)
@@ -139,7 +152,7 @@
                 }
             </CellTemplate>
         </TemplateColumn>
-        
+
         <TemplateColumn Title="Октябрь" CellStyleFunc="OctoberStyleFunc">
             <CellTemplate>
                 @if (context.Item.ExpensesInOctober.HasValue)
@@ -150,7 +163,7 @@
                 }
             </CellTemplate>
         </TemplateColumn>
-        
+
         <TemplateColumn Title="Ноябрь" CellStyleFunc="NovemberStyleFunc">
             <CellTemplate>
                 @if (context.Item.ExpensesInNovember.HasValue)
@@ -161,7 +174,7 @@
                 }
             </CellTemplate>
         </TemplateColumn>
-        
+
         <TemplateColumn Title="Декабрь" CellStyleFunc="DecemberStyleFunc">
             <CellTemplate>
                 @if (context.Item.ExpensesInDecember.HasValue)

@@ -189,3 +189,12 @@ code {
 .mud-button-root {
     text-transform: none !important;
 }
+
+.exclude-categories-container {
+    width: 30%;
+    
+    @media (max-width: 710px) {
+        width: 100%;
+        
+    }
+}

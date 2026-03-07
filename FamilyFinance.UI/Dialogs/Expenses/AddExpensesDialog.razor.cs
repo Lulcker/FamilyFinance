@@ -82,7 +82,7 @@ public partial class AddExpensesDialog(
             return;
         }
 
-        dateGroups.Add(new DateGroup { Date = date });
+        dateGroups.Insert(0, new DateGroup { Date = date });
         creatingDate = false;
         creatingDateDateTime = null;
     }
