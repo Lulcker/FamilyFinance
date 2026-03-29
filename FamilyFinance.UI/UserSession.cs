@@ -19,6 +19,7 @@ public class UserSession(
     private const string TokenKey = "family-finance.token";
     private const string NameKey = "family-finance.name";
     private const string EmailKey = "family-finance.email";
+    private const string ExcludeCategoryIdsKey = "family-finance.exclude-category-ids";
 
     #endregion
 
@@ -31,6 +32,8 @@ public class UserSession(
     public string Name { get; set; } = null!;
     
     public string Email { get; set; } = null!;
+
+    public IReadOnlyCollection<Guid> ExcludeCategoryIds { get; set; } = [];
 
     #endregion
 
@@ -62,6 +65,7 @@ public class UserSession(
         await localStorageService.SetItemAsync(TokenKey, responseModel.Token);
         await localStorageService.SetItemAsync(NameKey, responseModel.Name);
         await localStorageService.SetItemAsync(EmailKey, responseModel.Email);
+        await localStorageService.SetItemAsync(ExcludeCategoryIdsKey, ExcludeCategoryIds);
         
         navigationManager.NavigateTo("/");
         
@@ -74,10 +78,17 @@ public class UserSession(
         await localStorageService.RemoveItemAsync(TokenKey);
         await localStorageService.RemoveItemAsync(NameKey);
         await localStorageService.RemoveItemAsync(EmailKey);
+        await localStorageService.RemoveItemAsync(ExcludeCategoryIdsKey);
         
         navigationManager.NavigateTo("/sign-in");
         
         NotifyAuthenticationStateChanged(GetAuthenticationStateAsync());
+    }
+
+    public async Task SetExcludeCategoryIds(IReadOnlyCollection<Guid> excludeCategoryIds)
+    {
+        ExcludeCategoryIds = excludeCategoryIds;
+        await localStorageService.SetItemAsync(ExcludeCategoryIdsKey, ExcludeCategoryIds);
     }
 
     #endregion
@@ -104,6 +115,7 @@ public class UserSession(
         Token = await GetStringItemAsync(TokenKey);
         Name = await GetStringItemAsync(NameKey);
         Email = await GetStringItemAsync(EmailKey);
+        ExcludeCategoryIds = await localStorageService.GetItemAsync<IReadOnlyCollection<Guid>?>(ExcludeCategoryIdsKey) ?? [];
     }
 
     private void ClearUserData()
@@ -112,6 +124,7 @@ public class UserSession(
         Token = null!;
         Name = null!;
         Email = null!;
+        ExcludeCategoryIds = [];
     }
     
     private async Task<string> GetStringItemAsync(string key) =>

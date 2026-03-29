@@ -23,6 +23,11 @@ public interface IUserSession
     /// Почта пользователя
     /// </summary>
     string Email { get; }
+    
+    /// <summary>
+    /// Список Id категорий, которые не нужно включать в список для отчёта
+    /// </summary>
+    IReadOnlyCollection<Guid> ExcludeCategoryIds { get; }
 
     /// <summary>
     /// Начать сессию модератора
@@ -34,4 +39,10 @@ public interface IUserSession
     /// Завершить сессию
     /// </summary>
     Task EndSession();
+    
+    /// <summary>
+    /// Записать список Id категорий, которые не нужно включать в список для отчёта
+    /// </summary>
+    /// <param name="excludeCategoryIds">Список Id категорий</param>
+    Task SetExcludeCategoryIds(IReadOnlyCollection<Guid> excludeCategoryIds);
 }

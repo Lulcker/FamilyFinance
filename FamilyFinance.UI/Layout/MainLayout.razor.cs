@@ -40,6 +40,9 @@ public partial class MainLayout(
     private void OpenCategories() =>
         navigationManager.NavigateTo("/categories");
     
+    private void OpenReport() =>
+        navigationManager.NavigateTo("/");
+    
     private void OnLocationChanged(object? _, LocationChangedEventArgs e)
     {
         currentPage = navigationManager.ToBaseRelativePath(e.Location);

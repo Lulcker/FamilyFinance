@@ -12,6 +12,7 @@ public partial class ReportPage(
     CategoriesApiHelper categoriesApiHelper,
     ReportsApiHelper reportsApiHelper,
     IBreadcrumbHelper breadcrumbHelper,
+    IUserSession userSession,
     NavigationManager navigationManager
     ) : ComponentBase
 {
@@ -37,6 +38,8 @@ public partial class ReportPage(
         ]);
 
         await LoadCategories();
+
+        await SetOrUpdateExcludeCategories();
         
         await LoadDataAsync();
     }
@@ -55,13 +58,30 @@ public partial class ReportPage(
 
     private async Task LoadCategories() =>
         categories = [.. await categoriesApiHelper.AllAsync()];
+    
+    private async Task SetOrUpdateExcludeCategories()
+    {
+        var excludeCategoryIdsInLocalStorage = userSession.ExcludeCategoryIds;
+        
+        excludeCategories = [.. categories.IntersectBy(excludeCategoryIdsInLocalStorage, x => x.Id)];
+        
+        if (excludeCategories.Count == excludeCategoryIdsInLocalStorage.Count)
+            return;
+
+        await UpdateSetExcludeCategoryIds();
+    }
 
     private async Task ExcludeCategoryIdsChanged(IEnumerable<CategoryResponseModel>? categoryResponseModels)
     {
         excludeCategories = categoryResponseModels is not null ? categoryResponseModels.ToList() : [];
 
+        await UpdateSetExcludeCategoryIds();
+
         await LoadDataAsync();
     }
+
+    private async Task UpdateSetExcludeCategoryIds() =>
+        await userSession.SetExcludeCategoryIds([.. excludeCategories.Select(e => e.Id)]);
     
     private void GoToExpenses() =>
         navigationManager.NavigateTo("/expenses");

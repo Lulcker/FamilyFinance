@@ -20,6 +20,11 @@
                                 <MudMenuItem Label="Категории" OnClick="OpenCategories"
                                              Icon="@Icons.Material.Filled.Category" IconColor="Color.Info"/>
                             }
+                            @if (currentPage.StartsWith("categories"))
+                            {
+                                <MudMenuItem Label="На главную" OnClick="OpenReport"
+                                             Icon="@Icons.Material.Filled.ArrowBackIos" IconColor="Color.Info"/>
+                            }
                             <MudMenuItem Label="Выйти" OnClick="LogOutAsync"
                                          Icon="@Icons.Material.Filled.Logout" IconColor="Color.Error"/>
                         </MudMenu>
