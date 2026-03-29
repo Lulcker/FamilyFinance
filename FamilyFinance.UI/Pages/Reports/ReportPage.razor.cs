@@ -17,8 +17,6 @@ public partial class ReportPage(
     ) : ComponentBase
 {
     #region Fields
-    
-    private bool isLoading;
 
     private List<ExpensesByCategoryResponseModel> expensesByCategories = [];
 
@@ -46,14 +44,10 @@ public partial class ReportPage(
 
     private async Task LoadDataAsync()
     {
-        isLoading = true;
-
         expensesByCategories = [.. await reportsApiHelper.ExpensesByCategoriesAsync(new ExpensesByCategoryRequestModel
         {
             ExcludeCategoryIds = [.. excludeCategories.Select(c => c.Id)]
         })];
-
-        isLoading = false;
     }
 
     private async Task LoadCategories() =>

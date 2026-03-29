@@ -50,6 +50,7 @@ public partial class EditIncomeDialog(
     private bool IsSaveButtonDisabled => !newIncomeAmount.HasValue ||
                                          newIncomeAmount <= 0 ||
                                          (DateOnly.FromDateTime(newIncomeDateTime!.Value) == income.Date &&
+                                          // ReSharper disable once CompareOfFloatsByEqualityOperator
                                           newIncomeAmount == income.Amount &&
                                           newIncomeType == income.Type &&
                                           newIncomeComment == income.Comment);

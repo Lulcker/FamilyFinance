@@ -58,6 +58,7 @@ public partial class EditExpenseDialog(
     private bool IsSaveButtonDisabled => !amount.HasValue ||
                                          amount <= 0 ||
                                          !expenseDateTime.HasValue ||
+                                         // ReSharper disable once CompareOfFloatsByEqualityOperator
                                          (expense.Amount == amount && 
                                           expense.CategoryId == categoryId &&
                                           expense.Comment == comment &&
@@ -95,7 +96,7 @@ public partial class EditExpenseDialog(
         {
             await expensesApiHelper.UpdateAsync(new UpdateExpenseRequestModel
             {
-                Id = expense!.Id,
+                Id = expense.Id,
                 Date = DateOnly.FromDateTime(expenseDateTime!.Value),
                 Amount = amount!.Value,
                 IsPersonal = isPersonal,
@@ -118,7 +119,7 @@ public partial class EditExpenseDialog(
     {
         isOpened = false;
         
-        expense = null;
+        expense = null!;
         comment = null;
 
         if (executeAfterSave)

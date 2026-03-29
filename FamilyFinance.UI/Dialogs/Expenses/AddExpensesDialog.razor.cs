@@ -51,7 +51,6 @@ public partial class AddExpensesDialog(
     #region Properties
 
     private bool IsSaveButtonDisabled => newExpenses.Count < 1;
-                                         
 
     #endregion
     
