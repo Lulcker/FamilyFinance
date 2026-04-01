@@ -9,7 +9,8 @@ namespace FamilyFinance.UI.Dialogs.Expenses;
 
 public partial class AddExpensesDialog(
     ExpensesApiHelper expensesApiHelper,
-    ISnackbarHelper snackbarHelper
+    ISnackbarHelper snackbarHelper,
+    IUserSession userSession
     ) : ComponentBase
 {
     #region Parameters
@@ -99,11 +100,13 @@ public partial class AddExpensesDialog(
     private static void RemoveDraft(DateGroup group, AddExpenseRequestModel draft) =>
         group.Drafts.Remove(draft);
     
-    private void SaveExpense(AddExpenseRequestModel model, DateGroup group, AddExpenseRequestModel draft)
+    private async Task SaveExpense(AddExpenseRequestModel model, DateGroup group, AddExpenseRequestModel draft)
     {
         newExpenses.Add(model);
         
         group.Drafts.Remove(draft);
+
+        await userSession.SetExpenseDrafts(newExpenses);
         
         StateHasChanged();
     }
@@ -119,6 +122,19 @@ public partial class AddExpensesDialog(
 
     public void Open()
     {
+        newExpenses = [.. userSession.ExpenseDrafts];
+
+        if (newExpenses.Count > 0)
+        {
+            var distinctDates = newExpenses
+                .Select(e => e.Date)
+                .Distinct()
+                .OrderByDescending(x => x)
+                .ToList();
+            
+            dateGroups.AddRange(distinctDates.Select(d => new DateGroup { Date = d }));
+        }
+        
         isOpened = true;
         StateHasChanged();
     }
@@ -135,6 +151,8 @@ public partial class AddExpensesDialog(
             await expensesApiHelper.BulkAddAsync(newExpenses);
 
             await snackbarHelper.ShowSuccess("Расходы добавлены");
+
+            await userSession.SetExpenseDrafts([]);
 
             await Close(executeAfterSave: true);
         }
