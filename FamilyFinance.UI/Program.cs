@@ -15,4 +15,4 @@ builder
     .ConfigureAuthorization()
     .ConfigureExceptionHandler();
 
-await builder.Build().RunAsync();
+await builder.Build().RunAsync(); // tmp
