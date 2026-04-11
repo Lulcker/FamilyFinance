@@ -70,7 +70,7 @@ jobs:
             DEFAULT_USER_1_PASSWORD=${{ secrets.DEFAULT_USER_1_PASSWORD }}
             DEFAULT_USER_1_TRANSACTION_COLOR=${{ secrets.DEFAULT_USER_1_TRANSACTION_COLOR }}
             EOL
-            
+
             docker compose pull
             docker compose up -d --remove-orphans
             docker image prune -a -f
