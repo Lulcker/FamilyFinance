@@ -61,10 +61,10 @@
 }
 else
 {
-    <MudDataGrid Items="expenses"
+    <MudDataGrid Items="expenses" Virtualize
                  RowStyleFunc="RowStyleFunc"
                  SortMode="SortMode.None"
-                 Class="my-grid mt-2">
+                 Class="my-grid mt-2" Height="65vh">
         <Columns>
             <PropertyColumn Property="@(x => x.Date)" Title="Дата" />
             <TemplateColumn Title="Сумма">

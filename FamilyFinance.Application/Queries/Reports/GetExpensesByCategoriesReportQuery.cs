@@ -23,11 +23,11 @@ public class GetExpensesByCategoriesReportQuery(IRepository<Category> categoryRe
             {
                 Name = c.Name,
                 MonthlyPlan = c.MonthlyPlan,
-                Average = (c.Expenses
-                    .Where(e => !e.IsPersonal && e.Date.Year == dateTimeUtcNow.Year && dateTimeUtcNow.Month >= e.Date.Month)
+                Average = dateTimeUtcNow.Month == 1 ? 0 : (c.Expenses
+                    .Where(e => !e.IsPersonal && e.Date.Year == dateTimeUtcNow.Year && e.Date.Month < dateTimeUtcNow.Month)
                     .Select(e => (double?)e.Amount)
-                    .Sum() ?? 0) / dateTimeUtcNow.Month,
-                ExpensesInJanuary = dateTimeUtcNow.Month >= 1 
+                    .Sum() ?? 0) / (dateTimeUtcNow.Month - 1),
+                ExpensesInJanuary = dateTimeUtcNow.Month >= 1
                     ? c.Expenses
                         .Where(e => !e.IsPersonal && e.Date.Year == dateTimeUtcNow.Year && e.Date.Month == 1)
                         .Sum(e => e.Amount)
