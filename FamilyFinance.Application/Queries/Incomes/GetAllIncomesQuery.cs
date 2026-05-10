@@ -10,10 +10,11 @@ namespace FamilyFinance.Application.Queries.Incomes;
 /// </summary>
 public class GetAllIncomesQuery(IRepository<Income> incomeRepository)
 {
-    public async Task<IReadOnlyCollection<IncomeResponseModel>> ExecuteAsync(CancellationToken cancellationToken)
+    public async Task<IReadOnlyCollection<IncomeResponseModel>> ExecuteAsync(int? filterByMonth, CancellationToken cancellationToken)
     {
         return await incomeRepository
             .AsNoTracking()
+            .Where(i => !filterByMonth.HasValue || i.Date.Month == filterByMonth.Value)
             .Where(x => x.Date.Year == DateTime.UtcNow.Year)
             .Select(i => new IncomeResponseModel
             {

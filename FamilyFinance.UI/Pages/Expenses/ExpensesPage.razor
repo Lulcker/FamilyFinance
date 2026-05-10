@@ -29,18 +29,29 @@
     <MudRadio Value="false">Личные</MudRadio>
 </MudRadioGroup>
 
-@if (expenses.Count == 0 && !isLoading)
+<MudStack Row AlignItems="AlignItems.Center" Wrap="Wrap.Wrap">
+    <MudText>
+        Сумма расходов: <b>@expenses.Sum(i => i.Amount).FormatRubles()</b>
+    </MudText> 
+    
+    <MudSelect T="int?" Label="Месяц" Variant="Variant.Outlined"
+               Dense Value="filterByMonth" Style="max-width: 200px; min-width: 200px"
+               ValueChanged="FilterByMonthChangedAsync" Clearable>
+        @foreach (var month in Consts.Months.Where(m => m.Key <= DateTime.UtcNow.ToLocalTime().Month))
+        {
+            <MudSelectItem T="int?" Value="month.Key">@month.Name</MudSelectItem>
+        }
+    </MudSelect>
+</MudStack>
+
+@if (expenses.Count == 0)
 {
-    <MudText Typo="Typo.h5" Class="mt-2 mb-3">
-        Нет расходов
+    <MudText Class="mt-2">
+        <b>Нет расходов</b>
     </MudText>
 }
 else
 {
-    <MudText Class="mt-2">
-        Расходов за год: <b>@expenses.Sum(i => i.Amount).FormatRubles()</b>
-    </MudText>
-    
     <MudDataGrid Items="expenses"
                  RowStyleFunc="RowStyleFunc"
                  SortMode="SortMode.None"

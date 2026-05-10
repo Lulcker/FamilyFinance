@@ -10,10 +10,11 @@ namespace FamilyFinance.Application.Queries.Expenses;
 /// </summary>
 public class AllGeneralExpensesQuery(IRepository<Expense> expenseRepository)
 {
-    public async Task<IReadOnlyCollection<ExpenseResponseModel>> ExecuteAsync(CancellationToken cancellationToken)
+    public async Task<IReadOnlyCollection<ExpenseResponseModel>> ExecuteAsync(int? filterByMonth, CancellationToken cancellationToken)
     {
         return await expenseRepository
             .AsNoTracking()
+            .Where(i => !filterByMonth.HasValue || i.Date.Month == filterByMonth.Value)
             .Where(x => x.Date.Year == DateTime.UtcNow.Year)
             .Where(e => !e.IsPersonal)
             .Select(e => new ExpenseResponseModel

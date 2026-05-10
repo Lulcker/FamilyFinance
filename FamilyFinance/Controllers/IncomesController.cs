@@ -27,8 +27,8 @@ public class IncomesController(
     /// </summary>
     /// <returns>Список доходов</returns>
     [HttpGet("all")]
-    public async Task<ActionResult<IReadOnlyCollection<IncomeResponseModel>>> AllAsync(CancellationToken cancellationToken) =>
-        Ok(await getAllIncomesQuery.ExecuteAsync(cancellationToken));
+    public async Task<ActionResult<IReadOnlyCollection<IncomeResponseModel>>> AllAsync([FromQuery] int? filterByMonth, CancellationToken cancellationToken) =>
+        Ok(await getAllIncomesQuery.ExecuteAsync(filterByMonth, cancellationToken));
 
     #endregion
 

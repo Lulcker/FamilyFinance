@@ -78,18 +78,29 @@ else
     </MudPaper>
 }
 
-@if (incomes.Count == 0 && !isDataLoading)
+<MudStack Row AlignItems="AlignItems.Center" Wrap="Wrap.Wrap">
+    <MudText>
+        Сумма доходов: <b>@incomes.Sum(i => i.Amount).FormatRubles()</b>
+    </MudText> 
+    
+    <MudSelect T="int?" Label="Месяц" Variant="Variant.Outlined"
+               Dense Value="filterByMonth" Style="max-width: 200px; min-width: 200px"
+               ValueChanged="FilterByMonthChangedAsync" Clearable>
+        @foreach (var month in Consts.Months.Where(m => m.Key <= DateTime.UtcNow.ToLocalTime().Month))
+        {
+            <MudSelectItem T="int?" Value="month.Key">@month.Name</MudSelectItem>
+        }
+    </MudSelect>
+</MudStack>
+    
+@if (incomes.Count == 0)
 {
-    <MudText Typo="Typo.h5" Class="mt-2 mb-3">
-        Нет доходов
+    <MudText Class="mt-2">
+        <b>Нет доходов</b>
     </MudText>
 }
 else
 {
-    <MudText Class="mt-2">
-        Доходы за год: <b>@incomes.Sum(i => i.Amount).FormatRubles()</b>
-    </MudText>
-    
     <MudDataGrid Items="incomes" RowStyleFunc="RowStyleFunc" SortMode="SortMode.None" Class="my-grid mt-2">
         <Columns>
             <PropertyColumn Property="@(x => x.Date)" Title="Дата" />

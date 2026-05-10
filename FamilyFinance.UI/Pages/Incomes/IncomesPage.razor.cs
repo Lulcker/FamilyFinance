@@ -36,6 +36,8 @@ public partial class IncomesPage(
 
     private string? newIncomeComment;
 
+    private int? filterByMonth;
+
     #endregion
 
     #region Refs
@@ -66,9 +68,16 @@ public partial class IncomesPage(
     {
         isDataLoading = true;
 
-        incomes = [.. await incomesApiHelper.AllAsync()];
+        incomes = [.. await incomesApiHelper.AllAsync(filterByMonth)];
         
         isDataLoading = false;
+    }
+
+    private async Task FilterByMonthChangedAsync(int? value)
+    {
+        filterByMonth = value;
+
+        await LoadDataAsync();
     }
     
     private void SetAddedMode() => isAddedMode = true;

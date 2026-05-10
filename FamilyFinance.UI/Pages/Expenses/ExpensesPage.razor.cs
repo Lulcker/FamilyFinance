@@ -26,6 +26,8 @@ public partial class ExpensesPage(
     private bool isLoading;
 
     private bool isGeneralExpenses = true;
+    
+    private int? filterByMonth;
 
     #endregion
 
@@ -56,11 +58,18 @@ public partial class ExpensesPage(
         isLoading = true;
 
         if (isGeneralExpenses)
-            expenses = [.. await expensesApiHelper.AllGeneralAsync()];
+            expenses = [.. await expensesApiHelper.AllGeneralAsync(filterByMonth)];
         else
-            expenses = [..await expensesApiHelper.AllPersonalAsync()];
+            expenses = [..await expensesApiHelper.AllPersonalAsync(filterByMonth)];
         
         isLoading = false;
+    }
+    
+    private async Task FilterByMonthChangedAsync(int? value)
+    {
+        filterByMonth = value;
+
+        await LoadDataAsync();
     }
     
     private async Task LoadCategories() =>

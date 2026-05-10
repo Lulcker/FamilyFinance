@@ -28,16 +28,16 @@ public class ExpensesController(
     /// </summary>
     /// <returns>Список расходов</returns>
     [HttpGet("all-general")]
-    public async Task<ActionResult<IReadOnlyCollection<ExpenseResponseModel>>> AllGeneralAsync(CancellationToken cancellationToken) =>
-        Ok(await allGeneralExpensesQuery.ExecuteAsync(cancellationToken));
+    public async Task<ActionResult<IReadOnlyCollection<ExpenseResponseModel>>> AllGeneralAsync([FromQuery] int? filterByMonth, CancellationToken cancellationToken) =>
+        Ok(await allGeneralExpensesQuery.ExecuteAsync(filterByMonth, cancellationToken));
     
     /// <summary>
     /// Получение списка личных расходов
     /// </summary>
     /// <returns>Список расходов</returns>
     [HttpGet("all-personal")]
-    public async Task<ActionResult<IReadOnlyCollection<ExpenseResponseModel>>> AllPersonalAsync(CancellationToken cancellationToken) =>
-        Ok(await allPersonalExpensesQuery.ExecuteAsync(cancellationToken));
+    public async Task<ActionResult<IReadOnlyCollection<ExpenseResponseModel>>> AllPersonalAsync([FromQuery] int? filterByMonth, CancellationToken cancellationToken) =>
+        Ok(await allPersonalExpensesQuery.ExecuteAsync(filterByMonth, cancellationToken));
 
     #endregion
 
