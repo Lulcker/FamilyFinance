@@ -21,8 +21,6 @@ public partial class IncomesPage(
     #region Fields
 
     private List<IncomeResponseModel> incomes = [];
-
-    private bool isDataLoading;
     
     private bool isAddedMode;
     
@@ -66,11 +64,7 @@ public partial class IncomesPage(
     
     private async Task LoadDataAsync()
     {
-        isDataLoading = true;
-
         incomes = [.. await incomesApiHelper.AllAsync(filterByMonth)];
-        
-        isDataLoading = false;
     }
 
     private async Task FilterByMonthChangedAsync(int? value)
@@ -142,7 +136,7 @@ public partial class IncomesPage(
         }
         finally
         {
-            isDataLoading = false;
+            isLoading = false;
             await InvokeAsync(StateHasChanged);
         }
     }

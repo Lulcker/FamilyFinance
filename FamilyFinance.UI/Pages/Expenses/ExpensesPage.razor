@@ -29,17 +29,26 @@
     <MudRadio Value="false">Личные</MudRadio>
 </MudRadioGroup>
 
-<MudStack Row AlignItems="AlignItems.Center" Wrap="Wrap.Wrap">
+<MudStack Row AlignItems="AlignItems.Center" Wrap="Wrap.Wrap" Justify="Justify.FlexStart">
     <MudText>
         Сумма расходов: <b>@expenses.Sum(i => i.Amount).FormatRubles()</b>
     </MudText> 
     
     <MudSelect T="int?" Label="Месяц" Variant="Variant.Outlined"
-               Dense Value="filterByMonth" Style="max-width: 200px; min-width: 200px"
+               Dense Value="filterByMonth" OuterClass="select-180"
                ValueChanged="FilterByMonthChangedAsync" Clearable>
         @foreach (var month in Consts.Months.Where(m => m.Key <= DateTime.UtcNow.ToLocalTime().Month))
         {
             <MudSelectItem T="int?" Value="month.Key">@month.Name</MudSelectItem>
+        }
+    </MudSelect>
+    
+    <MudSelect T="Guid?" Label="Категория" Variant="Variant.Outlined"
+               Dense Value="filterByCategory" OuterClass="select-210"
+               ValueChanged="FilterByCategoryChangedAsync" Clearable>
+        @foreach (var category in categories)
+        {
+            <MudSelectItem T="Guid?" Value="category.Id">@category.Name</MudSelectItem>
         }
     </MudSelect>
 </MudStack>

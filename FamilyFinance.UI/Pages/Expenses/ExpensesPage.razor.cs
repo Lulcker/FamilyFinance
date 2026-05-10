@@ -23,11 +23,11 @@ public partial class ExpensesPage(
 
     private List<CategoryResponseModel> categories = [];
 
-    private bool isLoading;
-
     private bool isGeneralExpenses = true;
     
     private int? filterByMonth;
+    
+    private Guid? filterByCategory;
 
     #endregion
 
@@ -55,19 +55,22 @@ public partial class ExpensesPage(
     
     private async Task LoadDataAsync()
     {
-        isLoading = true;
-
         if (isGeneralExpenses)
-            expenses = [.. await expensesApiHelper.AllGeneralAsync(filterByMonth)];
+            expenses = [.. await expensesApiHelper.AllGeneralAsync(filterByMonth, filterByCategory)];
         else
-            expenses = [..await expensesApiHelper.AllPersonalAsync(filterByMonth)];
-        
-        isLoading = false;
+            expenses = [..await expensesApiHelper.AllPersonalAsync(filterByMonth, filterByCategory)];
     }
     
     private async Task FilterByMonthChangedAsync(int? value)
     {
         filterByMonth = value;
+
+        await LoadDataAsync();
+    }
+    
+    private async Task FilterByCategoryChangedAsync(Guid? value)
+    {
+        filterByCategory = value;
 
         await LoadDataAsync();
     }
@@ -92,8 +95,6 @@ public partial class ExpensesPage(
     {
         if (!await snackbarHelper.ShowConfirm("Вы уверены, что хотите удалить расход?"))
             return;
-        
-        isLoading = true;
 
         try
         {
@@ -105,7 +106,6 @@ public partial class ExpensesPage(
         }
         finally
         {
-            isLoading = false;
             await InvokeAsync(StateHasChanged);
         }
     }

@@ -198,3 +198,13 @@ code {
         
     }
 }
+
+.select-180 {
+    min-width: 180px;
+    max-width: 180px;
+}
+
+.select-210 {
+    min-width: 210px;
+    max-width: 210px;
+}

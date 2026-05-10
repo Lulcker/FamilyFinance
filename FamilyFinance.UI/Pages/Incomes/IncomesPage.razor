@@ -84,7 +84,7 @@ else
     </MudText> 
     
     <MudSelect T="int?" Label="Месяц" Variant="Variant.Outlined"
-               Dense Value="filterByMonth" Style="max-width: 200px; min-width: 200px"
+               Dense Value="filterByMonth" OuterClass="select-180"
                ValueChanged="FilterByMonthChangedAsync" Clearable>
         @foreach (var month in Consts.Months.Where(m => m.Key <= DateTime.UtcNow.ToLocalTime().Month))
         {
