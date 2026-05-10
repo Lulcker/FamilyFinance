@@ -59,7 +59,7 @@ public partial class ExpensesPage(
             expenses = [.. await expensesApiHelper.AllGeneralAsync(filterByMonth, filterByCategory)];
         else
             expenses = [..await expensesApiHelper.AllPersonalAsync(filterByMonth, filterByCategory)];
-    }
+    } //ping
     
     private async Task FilterByMonthChangedAsync(int? value)
     {
