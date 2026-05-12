@@ -19,6 +19,7 @@ public class ApiEndpointHelperGenerator : ISourceGenerator
                                          
                                          using System.Net.Http;
                                          using [Namespace];
+                                         using FamilyFinance.DTO.Dictionaries;
                                          using FamilyFinance.DTO.[UsingPrefixController].RequestModels;
                                          using FamilyFinance.DTO.[UsingPrefixController].ResponseModels;
                                          

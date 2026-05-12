@@ -35,6 +35,8 @@ public partial class IncomesPage(
     private string? newIncomeComment;
 
     private int? filterByMonth;
+    
+    private IncomeType? filterByType;
 
     #endregion
 
@@ -64,12 +66,19 @@ public partial class IncomesPage(
     
     private async Task LoadDataAsync()
     {
-        incomes = [.. await incomesApiHelper.AllAsync(filterByMonth)];
+        incomes = [.. await incomesApiHelper.AllAsync(filterByMonth, filterByType)];
     }
 
     private async Task FilterByMonthChangedAsync(int? value)
     {
         filterByMonth = value;
+
+        await LoadDataAsync();
+    }
+    
+    private async Task FilterByTypeChangedAsync(IncomeType? value)
+    {
+        filterByType = value;
 
         await LoadDataAsync();
     }

@@ -1,5 +1,6 @@
 ﻿using FamilyFinance.Application.Commands.Incomes;
 using FamilyFinance.Application.Queries.Incomes;
+using FamilyFinance.DTO.Dictionaries;
 using FamilyFinance.DTO.Incomes.RequestModels;
 using FamilyFinance.DTO.Incomes.ResponseModels;
 using Microsoft.AspNetCore.Authorization;
@@ -27,8 +28,8 @@ public class IncomesController(
     /// </summary>
     /// <returns>Список доходов</returns>
     [HttpGet("all")]
-    public async Task<ActionResult<IReadOnlyCollection<IncomeResponseModel>>> AllAsync([FromQuery] int? filterByMonth, CancellationToken cancellationToken) =>
-        Ok(await getAllIncomesQuery.ExecuteAsync(filterByMonth, cancellationToken));
+    public async Task<ActionResult<IReadOnlyCollection<IncomeResponseModel>>> AllAsync([FromQuery] int? filterByMonth, [FromQuery] IncomeType? filterByType, CancellationToken cancellationToken) =>
+        Ok(await getAllIncomesQuery.ExecuteAsync(filterByMonth, filterByType, cancellationToken));
 
     #endregion
 

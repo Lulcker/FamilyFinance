@@ -91,6 +91,13 @@ else
             <MudSelectItem T="int?" Value="month.Key">@month.Name</MudSelectItem>
         }
     </MudSelect>
+    
+    <MudSelect T="IncomeType?" Label="Тип" Variant="Variant.Outlined"
+               Dense Value="filterByType" OuterClass="select-210"
+               ValueChanged="FilterByTypeChangedAsync" Clearable>
+        <MudSelectItem T="IncomeType?" Value="IncomeType.Salary">Зарплата</MudSelectItem>
+        <MudSelectItem T="IncomeType?" Value="IncomeType.Additional">Дополнительный доход</MudSelectItem>
+    </MudSelect>
 </MudStack>
     
 @if (incomes.Count == 0)
@@ -106,15 +113,15 @@ else
                  SortMode="SortMode.None"
                  Class="my-grid mt-2" Height="70vh">
         <Columns>
-            <PropertyColumn Property="@(x => x.Date)" Title="Дата" />
-            <TemplateColumn Title="Сумма">
+            <PropertyColumn Property="@(x => x.Date)" Title="Дата" CellStyle="min-width: 100px; max-width: 100px" />
+            <TemplateColumn Title="Сумма" CellStyle="min-width: 105px; max-width: 105px">
                 <CellTemplate>
                     <MudText Typo="Typo.body2" Style="white-space: nowrap">
                         @context.Item.Amount.FormatRubles()
                     </MudText>
                 </CellTemplate>
             </TemplateColumn>
-            <TemplateColumn Title="Тип">
+            <TemplateColumn Title="Тип" CellStyle="min-width: 205px; max-width: 205px">
                 <CellTemplate>
                     @{
                         var type = context.Item.Type;
@@ -124,23 +131,26 @@ else
                     </MudChip>
                 </CellTemplate>
             </TemplateColumn>
-            <PropertyColumn Property="@(x => x.Comment)" Title="Комментарий" />
-            <TemplateColumn>
+            <TemplateColumn Title="Комментарий" CellStyle="min-width: 200px; max-width: 200px; overflow: hidden; white-space: nowrap; text-overflow: ellipsis">
+                <CellTemplate>
+                    <MudText Typo="Typo.body2" Style="max-width: 198px; min-width: 198px; overflow: hidden; white-space: nowrap; text-overflow: ellipsis" title="@context.Item.Comment">
+                        @context.Item.Comment
+                    </MudText>
+                </CellTemplate>
+            </TemplateColumn>
+            <TemplateColumn CellStyle="min-width: 80px; max-width: 80px">
                 <CellTemplate>
                     @{
                         var income = context.Item!;
                     }
-                    @if (income.UserId == userSession.UserId)
-                    {
-                        <MudStack Row AlignItems="AlignItems.Center" Wrap="Wrap.Wrap" Spacing="1">
-                            <MudIconButton Icon="@Icons.Material.Filled.Edit"
-                                           OnClick="@(() => OpenEditDialogAsync(income))"
-                                           Size="Size.Small" />
-                            <MudIconButton Icon="@Icons.Material.Filled.Delete"
-                                           OnClick="@(() => DeleteIncomeAsync(income.Id))"
-                                           Color="Color.Error" Size="Size.Small" />
-                        </MudStack>
-                    }
+                    <MudStack Row AlignItems="AlignItems.Center" Wrap="Wrap.Wrap" Spacing="1">
+                        <MudIconButton Icon="@Icons.Material.Filled.Edit"
+                                       OnClick="@(() => OpenEditDialogAsync(income))"
+                                       Size="Size.Small" />
+                        <MudIconButton Icon="@Icons.Material.Filled.Delete"
+                                       OnClick="@(() => DeleteIncomeAsync(income.Id))"
+                                       Color="Color.Error" Size="Size.Small" />
+                    </MudStack>
                 </CellTemplate>
             </TemplateColumn>
         </Columns>
