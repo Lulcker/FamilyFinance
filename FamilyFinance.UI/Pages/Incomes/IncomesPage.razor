@@ -131,26 +131,35 @@ else
                     </MudChip>
                 </CellTemplate>
             </TemplateColumn>
-            <TemplateColumn Title="Комментарий" CellStyle="min-width: 200px; max-width: 200px; overflow: hidden; white-space: nowrap; text-overflow: ellipsis">
+            <TemplateColumn Title="Комментарий" CellStyle="min-width: 240px; max-width: 240px; overflow: hidden; white-space: nowrap; text-overflow: ellipsis">
                 <CellTemplate>
-                    <MudText Typo="Typo.body2" Style="max-width: 198px; min-width: 198px; overflow: hidden; white-space: nowrap; text-overflow: ellipsis" title="@context.Item.Comment">
+                    <MudText Typo="Typo.body2" Style="max-width: 237px; min-width: 237px; overflow: hidden; white-space: nowrap; text-overflow: ellipsis" title="@context.Item.Comment">
                         @context.Item.Comment
                     </MudText>
                 </CellTemplate>
             </TemplateColumn>
-            <TemplateColumn CellStyle="min-width: 80px; max-width: 80px">
+            <TemplateColumn CellStyle="min-width: 40px; max-width: 40px">
                 <CellTemplate>
                     @{
                         var income = context.Item!;
                     }
-                    <MudStack Row AlignItems="AlignItems.Center" Wrap="Wrap.Wrap" Spacing="1">
-                        <MudIconButton Icon="@Icons.Material.Filled.Edit"
-                                       OnClick="@(() => OpenEditDialogAsync(income))"
-                                       Size="Size.Small" />
-                        <MudIconButton Icon="@Icons.Material.Filled.Delete"
-                                       OnClick="@(() => DeleteIncomeAsync(income.Id))"
-                                       Color="Color.Error" Size="Size.Small" />
-                    </MudStack>
+                    
+                    <MudMenu Icon="@Icons.Material.Filled.MoreVert" Size="Size.Small" Dense>
+                        @if (userSession.UserId == context.Item.UserId)
+                        {
+                            <MudMenuItem Icon="@Icons.Material.Filled.Edit" Label="Редактировать"
+                                         OnClick="@(() => OpenEditDialogAsync(income))" />
+                            
+                            <MudMenuItem Icon="@Icons.Material.Filled.Delete" Label="Удалить"
+                                         OnClick="@(() => DeleteIncomeAsync(income.Id))"
+                                         IconColor="Color.Error" />
+                        }
+                        else
+                        {
+                            <MudMenuItem Icon="@Icons.Material.Filled.DoDisturb" Label="Чужой доход"
+                                         IconColor="Color.Dark" Disabled />
+                        }
+                    </MudMenu>
                 </CellTemplate>
             </TemplateColumn>
         </Columns>
