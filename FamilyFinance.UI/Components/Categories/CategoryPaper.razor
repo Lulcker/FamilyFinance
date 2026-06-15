@@ -12,6 +12,37 @@
                          Variant="Variant.Outlined" Immediate
                          Class="mb-4" Min="0"
                          OnKeyDown="HandleKeyDown" />
+        
+        <MudTextField Label="Вспомогательное слово"
+                      @bind-Value="auxiliaryWord"
+                      Variant="Variant.Outlined"
+                      Immediate Class="mb-4"
+                      OnKeyDown="HandleKeyDownForAuxiliaryWord" />
+        
+        <MudButton Variant="Variant.Filled"
+                   OnClick="AddAuxiliaryWord"
+                   Disabled="@(auxiliaryWord.IsEmpty())"
+                   Class="mb-4" Color="Color.Primary">
+            Добавить
+        </MudButton>
+        
+        if (auxiliaryWords.Count > 0)
+        {
+            <MudText>
+                Вспомогательные слова:
+            </MudText>
+            <div>
+                @foreach (var word in auxiliaryWords)
+                {
+                    <MudChip T="string" @key="word" Variant="Variant.Text"
+                             Color="Color.Primary"
+                             CloseIcon="@Icons.Material.Filled.Delete"
+                             OnClose="@(() => RemoveAuxiliaryWord(word))">
+                        @word
+                    </MudChip>
+                }
+            </div>
+        }
 
         <MudStack Row AlignItems="AlignItems.Center">
             <MudButton OnClick="UnsetAndClearUpdateMode"

@@ -37,6 +37,7 @@ public class UpdateCategoryCommand(
         
         category.Name = newCategoryName;
         category.MonthlyPlan = requestModel.MonthlyPlan;
+        category.AuxiliaryWords = requestModel.AuxiliaryWords;
         
         await unitOfWork.SaveChangesAsync(cancellationToken);
         

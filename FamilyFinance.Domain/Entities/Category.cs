@@ -21,4 +21,9 @@ public class Category : EntityBase
     /// Траты
     /// </summary>
     public ICollection<Expense> Expenses { get; set; } = new HashSet<Expense>();
+    
+    /// <summary>
+    /// Вспомогательные слова
+    /// </summary>
+    public required ICollection<string> AuxiliaryWords { get; set; }
 }

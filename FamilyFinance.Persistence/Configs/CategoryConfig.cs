@@ -13,5 +13,8 @@ internal sealed class CategoryConfig : EntityTypeConfigurationBase<Category>
             .WithOne(c => c.Category)
             .HasForeignKey(c => c.CategoryId)
             .OnDelete(DeleteBehavior.Restrict);
+
+        builder.Property(c => c.AuxiliaryWords)
+            .HasDefaultValue(Array.Empty<string>());
     }
 }

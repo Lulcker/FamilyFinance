@@ -28,6 +28,10 @@ public partial class CategoriesPage(
     private string newCategoryName = string.Empty;
 
     private double newCategoryMonthlyPlan;
+    
+    private HashSet<string> auxiliaryWords = [];
+
+    private string auxiliaryWord = string.Empty;
 
     #endregion
     
@@ -64,8 +68,24 @@ public partial class CategoriesPage(
     {
         newCategoryName = string.Empty;
         newCategoryMonthlyPlan = 0;
+        auxiliaryWords = [];
+        auxiliaryWord = string.Empty;
         
         isAddedMode = false;
+    }
+
+    private void AddAuxiliaryWord()
+    {
+        if (auxiliaryWord.IsEmpty())
+            return;
+        
+        auxiliaryWords.Add(auxiliaryWord.Trim());
+        auxiliaryWord = string.Empty;
+    }
+
+    private void RemoveAuxiliaryWord(string word)
+    {
+        auxiliaryWords.Remove(word);
     }
 
     private async Task SaveAsync()
@@ -80,7 +100,8 @@ public partial class CategoriesPage(
             await categoriesApiHelper.AddAsync(new AddCategoryRequestModel
             {
                 Name = newCategoryName.Trim(),
-                MonthlyPlan = newCategoryMonthlyPlan
+                MonthlyPlan = newCategoryMonthlyPlan,
+                AuxiliaryWords = auxiliaryWords
             });
             
             UnsetAndClearAddedMode();
@@ -105,6 +126,16 @@ public partial class CategoriesPage(
                 break;
             case "Escape":
                 UnsetAndClearAddedMode();
+                break;
+        }
+    }
+    
+    private void HandleKeyDownForAuxiliaryWord(KeyboardEventArgs e)
+    {
+        switch (e.Key)
+        {
+            case "Enter":
+                AddAuxiliaryWord();
                 break;
         }
     }

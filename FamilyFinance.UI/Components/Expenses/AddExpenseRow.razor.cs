@@ -1,5 +1,6 @@
 ﻿using FamilyFinance.DTO.Categories.ResponseModels;
 using FamilyFinance.DTO.Expenses.RequestModels;
+using FamilyFinance.UI.Extensions;
 using Microsoft.AspNetCore.Components;
 
 namespace FamilyFinance.UI.Components.Expenses;
@@ -26,11 +27,40 @@ public partial class AddExpenseRow : ComponentBase
         
     private Guid? categoryId;
 
-    private string? comment;
+    private string comment = string.Empty;
+
+    private bool showAuxiliaryWords;
 
     #endregion
 
     private bool CanSave => amount > 0 && categoryId.HasValue;
+    
+    private List<AuxiliaryWordCategory> AuxiliaryWordCategories => Categories
+        .SelectMany(c => c.AuxiliaryWords.Select(aw => new AuxiliaryWordCategory(
+            AuxiliaryWord: aw,
+            CategoryName: c.Name,
+            CategoryId: c.Id
+        )))
+        .ToList();
+
+    private List<AuxiliaryWordCategory> ShowedAuxiliaryWords => comment.IsNotEmpty()
+        ? [.. AuxiliaryWordCategories.Where(a => a.AuxiliaryWord.Contains(comment, StringComparison.OrdinalIgnoreCase))]
+        : [];
+
+    private void CommentChanged(string comm)
+    {
+        comment = comm;
+        
+        if (!categoryId.HasValue)
+            showAuxiliaryWords = true;
+    }
+    
+    private void OnAuxiliaryWordSelect(AuxiliaryWordCategory auxiliaryWordCategory)
+    {
+        categoryId = auxiliaryWordCategory.CategoryId;
+        comment = auxiliaryWordCategory.AuxiliaryWord;
+        showAuxiliaryWords = false;
+    }
 
     private async Task Save()
     {
@@ -46,4 +76,6 @@ public partial class AddExpenseRow : ComponentBase
             Comment = comment
         });
     }
+
+    private record AuxiliaryWordCategory(string AuxiliaryWord, string CategoryName, Guid CategoryId);
 }

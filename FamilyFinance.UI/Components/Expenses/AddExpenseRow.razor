@@ -21,11 +21,25 @@
         Личный
     </MudSwitch>
 
-    <MudTextField Label="Комментарий"
-                  @bind-Value="comment"
+    <MudTextField T="string" Label="Комментарий"
+                  Value="comment"
+                  ValueChanged="CommentChanged"
                   Variant="Variant.Outlined"
                   Immediate
                   Class="mt-2"/>
+    
+    @if (ShowedAuxiliaryWords.Count > 0 && showAuxiliaryWords)
+    {
+        <MudList T="AuxiliaryWordCategory" Dense>
+            @foreach (var auxiliaryWord in ShowedAuxiliaryWords)
+            {
+                <MudListItem @key="auxiliaryWord"
+                             Text="@auxiliaryWord.AuxiliaryWord"
+                             SecondaryText="@auxiliaryWord.CategoryName"
+                             OnClick="@(() => OnAuxiliaryWordSelect(auxiliaryWord))" />
+            }
+        </MudList>
+    }
 
     <MudStack Row AlignItems="AlignItems.Center" Justify="Justify.SpaceBetween" Class="mt-2">
         <MudButton OnClick="Save"
@@ -34,6 +48,6 @@
                    Disabled="@(!CanSave)">
             Сохранить
         </MudButton>
-        <MudIconButton Icon="@Icons.Material.Filled.Delete" Color="Color.Error" OnClick="@(()=>OnRemove.InvokeAsync(null))" />
+        <MudIconButton Icon="@Icons.Material.Filled.Delete" Color="Color.Error" OnClick="@(() => OnRemove.InvokeAsync(null))" />
     </MudStack>
 </MudPaper>

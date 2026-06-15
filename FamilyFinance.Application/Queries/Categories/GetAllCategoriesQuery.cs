@@ -18,7 +18,8 @@ public class GetAllCategoriesQuery(IRepository<Category> categoryRepository)
             {
                 Id = c.Id,
                 Name = c.Name,
-                MonthlyPlan = c.MonthlyPlan
+                MonthlyPlan = c.MonthlyPlan,
+                AuxiliaryWords = c.AuxiliaryWords
             })
             .OrderBy(c => c.Name)
             .ToListAsync(cancellationToken);

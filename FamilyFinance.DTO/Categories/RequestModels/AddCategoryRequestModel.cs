@@ -13,5 +13,10 @@ public class AddCategoryRequestModel
     /// <summary>
     /// Месячный план расходов
     /// </summary>
-    public required double MonthlyPlan { get; set; }
+    public required double MonthlyPlan { get; init; }
+    
+    /// <summary>
+    /// Вспомогательные слова
+    /// </summary>
+    public required ICollection<string> AuxiliaryWords { get; init; }
 }

@@ -19,4 +19,9 @@ public class CategoryResponseModel
     /// Месячный план расходов
     /// </summary>
     public required double MonthlyPlan { get; set; }
+    
+    /// <summary>
+    /// Вспомогательные слова
+    /// </summary>
+    public required ICollection<string> AuxiliaryWords { get; set; }
 }

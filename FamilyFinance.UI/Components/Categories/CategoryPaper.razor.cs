@@ -39,11 +39,17 @@ public partial class CategoryPaper(
     
     private double newCategoryMonthlyPlan;
 
+    private HashSet<string> auxiliaryWords = [];
+
+    private string auxiliaryWord = string.Empty;
+
     #endregion
 
     #region Properties
 
-    private bool IsSaveButtonDisabled => (newCategoryName.Trim().Equals(Category.Name, StringComparison.CurrentCultureIgnoreCase) && newCategoryMonthlyPlan == Category.MonthlyPlan)
+    private bool IsSaveButtonDisabled => (newCategoryName.Trim().Equals(Category.Name, StringComparison.CurrentCultureIgnoreCase) &&
+                                          newCategoryMonthlyPlan == Category.MonthlyPlan &&
+                                          auxiliaryWords.OrderBy(a => a).SequenceEqual(Category.AuxiliaryWords.OrderBy(aw => aw)))
                                          || isUpdateLoading;
 
     #endregion
@@ -55,6 +61,7 @@ public partial class CategoryPaper(
         isEditMode = true;
         newCategoryName = Category.Name;
         newCategoryMonthlyPlan = Category.MonthlyPlan;
+        auxiliaryWords = [.. Category.AuxiliaryWords];
     }
 
     private void UnsetAndClearUpdateMode()
@@ -63,6 +70,21 @@ public partial class CategoryPaper(
         
         newCategoryName = string.Empty;
         newCategoryMonthlyPlan = 0;
+        auxiliaryWords = [];
+    }
+    
+    private void AddAuxiliaryWord()
+    {
+        if (auxiliaryWord.IsEmpty())
+            return;
+        
+        auxiliaryWords.Add(auxiliaryWord.Trim());
+        auxiliaryWord = string.Empty;
+    }
+
+    private void RemoveAuxiliaryWord(string word)
+    {
+        auxiliaryWords.Remove(word);
     }
 
     private async Task SaveAsync()
@@ -78,13 +100,15 @@ public partial class CategoryPaper(
             {
                 CategoryId = Category.Id,
                 NewName = newCategoryName.Trim(),
-                MonthlyPlan = newCategoryMonthlyPlan
+                MonthlyPlan = newCategoryMonthlyPlan,
+                AuxiliaryWords = auxiliaryWords
             });
             
             await snackbarHelper.ShowSuccess("Категория обновлена");
 
             Category.Name = newCategoryName.Trim().UppercaseFirstLetter();
             Category.MonthlyPlan = newCategoryMonthlyPlan;
+            Category.AuxiliaryWords = auxiliaryWords;
 
             UnsetAndClearUpdateMode();
         }
@@ -116,6 +140,16 @@ public partial class CategoryPaper(
                 break;
             case "Escape":
                 UnsetAndClearUpdateMode();
+                break;
+        }
+    }
+    
+    private void HandleKeyDownForAuxiliaryWord(KeyboardEventArgs e)
+    {
+        switch (e.Key)
+        {
+            case "Enter":
+                AddAuxiliaryWord();
                 break;
         }
     }

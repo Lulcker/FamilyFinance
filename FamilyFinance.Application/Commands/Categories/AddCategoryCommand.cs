@@ -32,7 +32,8 @@ public class AddCategoryCommand(
         category = new Category
         {
             Name = categoryName,
-            MonthlyPlan = requestModel.MonthlyPlan
+            MonthlyPlan = requestModel.MonthlyPlan,
+            AuxiliaryWords = requestModel.AuxiliaryWords
         };
         
         categoryRepository.Add(category);
